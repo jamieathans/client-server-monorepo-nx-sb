@@ -1,0 +1,23 @@
+{
+  "name": "@org/web",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@org/shared-ui": "*",
+    "@org/shared-utils": "*"
+  },
+  "nx": {
+    "targets": {
+      "serve": {
+        "dependsOn": [
+          "^typecheck"
+        ]
+      },
+      "build": {
+        "dependsOn": [
+          "^typecheck"
+        ]
+      }
+    }
+  }
+}

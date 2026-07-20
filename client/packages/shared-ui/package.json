@@ -1,0 +1,9 @@
+{
+  "name": "@org/shared-ui",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@org/shared-utils": "*"
+  }
+}

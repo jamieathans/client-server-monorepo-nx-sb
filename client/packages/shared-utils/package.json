@@ -1,0 +1,6 @@
+{
+  "name": "@org/shared-utils",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
