@@ -1,0 +1,12 @@
+.headerGroup {
+  height: 100%;
+  padding-inline: var(--mantine-spacing-md);
+}
+
+.headerRightAlignedGroup {
+  margin-left: auto;
+}
+
+.navbar {
+  padding: var(--mantine-spacing-md);
+}

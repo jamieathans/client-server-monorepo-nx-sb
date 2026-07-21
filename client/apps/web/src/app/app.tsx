@@ -15,7 +15,7 @@ function Root() {
 
 export function App() {
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
+    <MantineProvider theme={theme} defaultColorScheme="auto">
       <Root />
     </MantineProvider>
   );

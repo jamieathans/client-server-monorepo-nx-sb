@@ -1,5 +1,7 @@
 import { AppShell, Burger, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { ColourSchemeToggle } from '@org/shared-ui';
+import classes from './root-layout.module.css';
 
 export function RootLayout() {
   const [opened, { toggle }] = useDisclosure();
@@ -11,12 +13,14 @@ export function RootLayout() {
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
+        <Group className={classes.headerGroup}>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          Header has a burger icon below sm breakpoint
+          <Group className={classes.headerRightAlignedGroup}>
+            <ColourSchemeToggle />
+          </Group>
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar p="md">
+      <AppShell.Navbar className={classes.navbar}>
         Navbar is collapsed on mobile at sm breakpoint. At that point it is no
         longer offset by padding in the main element and it takes the full width
         of the screen when opened.
