@@ -48,6 +48,8 @@
     "eslint-plugin-react-hooks": "^7.0.0",
     "jsdom": "^27.1.0",
     "nx": "23.1.0",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.8.1",
     "react-refresh": "^0.10.0",
     "tslib": "^2.3.0",
@@ -64,6 +66,8 @@
     "apps/*"
   ],
   "dependencies": {
+    "@mantine/core": "^9.4.1",
+    "@mantine/hooks": "^9.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }
