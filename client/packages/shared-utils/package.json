@@ -2,5 +2,10 @@
   "name": "@org/shared-utils",
   "exports": {
     ".": "./src/index.ts"
+  },
+  "nx": {
+    "tags": [
+      "type:utils"
+    ]
   }
 }
