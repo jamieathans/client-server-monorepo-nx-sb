@@ -1,4 +1,5 @@
 import { createTheme, MantineProvider } from '@mantine/core';
+import { RootLayout } from '../root-layout/root-layout';
 
 // Uncomment this line to use CSS modules
 // import styles from './app.module.css';
@@ -9,12 +10,12 @@ import { createTheme, MantineProvider } from '@mantine/core';
 const theme = createTheme({/** Put your mantine theme override here */});
 
 function Root() {
-  return <div>App</div>;
+  return <RootLayout />;
 }
 
 export function App() {
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider theme={theme} defaultColorScheme="dark">
       <Root />
     </MantineProvider>
   );
