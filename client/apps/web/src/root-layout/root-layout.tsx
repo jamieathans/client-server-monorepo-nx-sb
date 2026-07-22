@@ -1,7 +1,8 @@
-import { AppShell, Burger, Group, Text } from '@mantine/core';
+import { AppShell, Burger, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ColourSchemeToggle } from '@org/shared-ui';
 import classes from './root-layout.module.css';
+import { Outlet } from 'react-router';
 
 export function RootLayout() {
   const [opened, { toggle }] = useDisclosure();
@@ -26,10 +27,11 @@ export function RootLayout() {
         of the screen when opened.
       </AppShell.Navbar>
       <AppShell.Main>
-        <Text>This is the main section, your app content here.</Text>
+        {/* <Text>This is the main section, your app content here.</Text>
         <Text>
           Layout used in most cases - Navbar and Header with fixed position
-        </Text>
+        </Text> */}
+        <Outlet />
       </AppShell.Main>
     </AppShell>
   );

@@ -1,5 +1,6 @@
 import { createTheme, MantineProvider } from '@mantine/core';
-import { RootLayout } from '../root-layout/root-layout';
+import { RouteManager } from '../route-manager/route-manager';
+import { BrowserRouter } from 'react-router';
 
 // Uncomment this line to use CSS modules
 // import styles from './app.module.css';
@@ -10,13 +11,15 @@ import { RootLayout } from '../root-layout/root-layout';
 const theme = createTheme({/** Put your mantine theme override here */});
 
 function Root() {
-  return <RootLayout />;
+  return <RouteManager />;
 }
 
 export function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme="auto">
-      <Root />
+      <BrowserRouter>
+        <Root />
+      </BrowserRouter>
     </MantineProvider>
   );
 }
