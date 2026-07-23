@@ -2,12 +2,21 @@ import { lazy, Suspense, useEffect } from 'react';
 import { RootLayout } from '../root-layout/root-layout';
 import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import { RoutePaths } from '../route-paths';
-//import { CenteredLoader } from '@org/shared-ui';
+import { Oval } from 'react-loader-spinner';
+import classes from './router-manager.module.css';
 
 const NotificationsRoute = lazy(
   () => import('../features/notifications/notifications-route'),
 );
 const LoadersRoute = lazy(() => import('../features/loaders/loaders-route'));
+
+function SuspenseFallback() {
+  return (
+    <div className={classes.suspenseFallbackContainer}>
+      <Oval color="blue" secondaryColor="blue" />
+    </div>
+  );
+}
 
 export function RouteManager() {
   const navigate = useNavigate();
@@ -23,7 +32,7 @@ export function RouteManager() {
   );
 
   return (
-    <Suspense fallback={<div>Loading ...</div>}>
+    <Suspense fallback={<SuspenseFallback />}>
       <Routes>
         <Route path="/" element={<RootLayout />}>
           <Route
