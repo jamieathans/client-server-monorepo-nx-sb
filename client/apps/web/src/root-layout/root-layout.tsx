@@ -25,6 +25,7 @@ export function RootLayout() {
       <AppShell.Navbar className={classes.navbar}>
         <AppShell.Section grow component={ScrollArea}>
           <NavLink label="Notifications" to={`/${RoutePaths.Notifications}`} />
+          <NavLink label="Loaders" to={`/${RoutePaths.Loaders}`} />
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
