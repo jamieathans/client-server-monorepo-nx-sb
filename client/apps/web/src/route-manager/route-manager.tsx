@@ -12,11 +12,12 @@ const LoadersRoute = lazy(() => import('../features/loaders/loaders-route'));
 
 function SuspenseFallback() {
   return (
-    <Oval
-      color="blue"
-      secondaryColor="blue"
-      wrapperClass={classes.suspenseFallbackContainer}
-    />
+    <div className={classes.suspenseFallbackContainer}>
+      <Oval
+        color="var(--mantine-color-blue-filled)"
+        secondaryColor="var(--mantine-color-blue-filled)"
+      />
+    </div>
   );
 }
 
