@@ -1,8 +1,9 @@
-import { AppShell, Burger, Group } from '@mantine/core';
+import { AppShell, Burger, Group, ScrollArea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { ColourSchemeToggle } from '@org/shared-ui';
+import { ColourSchemeToggle, NavLink } from '@org/shared-ui';
 import classes from './root-layout.module.css';
 import { Outlet } from 'react-router';
+import { RoutePaths } from '../route-paths';
 
 export function RootLayout() {
   const [opened, { toggle }] = useDisclosure();
@@ -22,9 +23,9 @@ export function RootLayout() {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar className={classes.navbar}>
-        Navbar is collapsed on mobile at sm breakpoint. At that point it is no
-        longer offset by padding in the main element and it takes the full width
-        of the screen when opened.
+        <AppShell.Section grow component={ScrollArea}>
+          <NavLink label="Notifications" to={`/${RoutePaths.Notifications}`} />
+        </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
         {/* <Text>This is the main section, your app content here.</Text>
