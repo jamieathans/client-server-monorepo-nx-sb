@@ -6,7 +6,11 @@ import { Outlet } from 'react-router';
 import { RoutePaths } from '../route-paths';
 
 export function RootLayout() {
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, disclosure] = useDisclosure();
+
+  function handleNavLinkClick() {
+    disclosure.close();
+  }
 
   return (
     <AppShell
@@ -15,7 +19,12 @@ export function RootLayout() {
     >
       <AppShell.Header>
         <Group className={classes.headerGroup}>
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          <Burger
+            opened={opened}
+            onClick={disclosure.toggle}
+            hiddenFrom="sm"
+            size="sm"
+          />
           <Group className={classes.headerRightAlignedGroup}>
             <ColourSchemeToggle />
           </Group>
@@ -27,8 +36,16 @@ export function RootLayout() {
           grow
           component={ScrollArea}
         >
-          <NavLink label="Notifications" to={`/${RoutePaths.Notifications}`} />
-          <NavLink label="Loaders" to={`/${RoutePaths.Loaders}`} />
+          <NavLink
+            label="Notifications"
+            to={`/${RoutePaths.Notifications}`}
+            onClick={handleNavLinkClick}
+          />
+          <NavLink
+            label="Loaders"
+            to={`/${RoutePaths.Loaders}`}
+            onClick={handleNavLinkClick}
+          />
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
