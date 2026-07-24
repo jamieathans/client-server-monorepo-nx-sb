@@ -32,7 +32,12 @@ export function RootLayout() {
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
-        <ScrollArea className={classes.mainScrollArea}>
+        <ScrollArea
+          classNames={{
+            root: classes.mainScrollAreaRoot,
+            content: classes.mainScrollAreaContent,
+          }}
+        >
           <Outlet />
         </ScrollArea>
       </AppShell.Main>

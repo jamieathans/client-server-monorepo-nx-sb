@@ -12,10 +12,14 @@
   padding-inline: var(--mantine-spacing-md);
 }
 
-.mainScrollArea {
+.mainScrollAreaRoot {
   height: calc(
     100vh - var(--app-shell-header-height, 0px) -
       var(--app-shell-footer-height, 0px)
   );
   padding: var(--mantine-spacing-md);
+}
+
+.mainScrollAreaContent {
+  height: 100%;
 }
