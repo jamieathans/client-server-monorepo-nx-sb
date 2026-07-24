@@ -14,7 +14,7 @@
 	<groupId>com.example.demo</groupId>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${revision}</version>
 
 	<modules>
 		<module>api</module>
@@ -39,6 +39,7 @@
 
 	<properties>
 		<java.version>25</java.version>
+		<revision>1.0.0-SNAPSHOT</revision>
 	</properties>
 
 	<dependencyManagement>
