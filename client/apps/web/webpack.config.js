@@ -14,6 +14,15 @@ module.exports = {
       disableDotRule: true,
       htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
     },
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'http://localhost:8080',
+      },
+    ],
+    client: {
+      overlay: true,
+    },
   },
   plugins: [
     new NxAppWebpackPlugin({
