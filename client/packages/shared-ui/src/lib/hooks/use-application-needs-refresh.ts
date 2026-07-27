@@ -23,12 +23,8 @@ export function useApplicationNeedsRefresh() {
         return;
       }
 
-      console.log('gitRepoPropertiesQuery.data', gitRepoPropertiesQuery.data);
-
       if (!commitIdRef.current) {
         commitIdRef.current = gitRepoPropertiesQuery.data.commitId;
-
-        console.log('commitIdRef.current', commitIdRef.current);
 
         return;
       }

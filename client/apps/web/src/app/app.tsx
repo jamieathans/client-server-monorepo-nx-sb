@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router';
 import { Notifications } from '@mantine/notifications';
 import {
   showErrorNotification,
+  showWarningNotification,
   useApplicationNeedsRefresh,
 } from '@org/shared-ui';
 import { useEffect } from 'react';
@@ -50,7 +51,14 @@ function Root() {
 
   useEffect(
     function showNotificationIfApplicationNeedsRefresh() {
-      console.log('needsRefresh', needsRefresh);
+      showWarningNotification({
+        title: 'Application Refresh Required',
+        message:
+          'Please refresh the application by clicking the browser refresh button.',
+        allowClose: false,
+        withCloseButton: false,
+        autoClose: false,
+      });
     },
     [needsRefresh],
   );
