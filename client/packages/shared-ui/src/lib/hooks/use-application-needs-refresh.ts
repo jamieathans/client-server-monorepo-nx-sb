@@ -1,0 +1,46 @@
+import { useQuery } from '@tanstack/react-query';
+import { GitRepoPropertiesQueryFactory } from '../query-factories/git-repo-properties-query-factory';
+import { useEffect, useRef, useState } from 'react';
+
+export function useApplicationNeedsRefresh() {
+  const [needsRefresh, setNeedsRefresh] = useState(false);
+  const commitIdRef = useRef('');
+
+  const gitRepoPropertiesQuery = useQuery({
+    ...GitRepoPropertiesQueryFactory.propertiesQueryOptions(),
+    refetchInterval: () => {
+      if (needsRefresh) {
+        return false;
+      }
+
+      return 5_000;
+    },
+  });
+
+  useEffect(
+    function checkIfApplicationNeedsRefresh() {
+      if (!gitRepoPropertiesQuery.data) {
+        return;
+      }
+
+      console.log('gitRepoPropertiesQuery.data', gitRepoPropertiesQuery.data);
+
+      if (!commitIdRef.current) {
+        commitIdRef.current = gitRepoPropertiesQuery.data.commitId;
+
+        console.log('commitIdRef.current', commitIdRef.current);
+
+        return;
+      }
+
+      if (commitIdRef.current !== gitRepoPropertiesQuery.data.commitId) {
+        setNeedsRefresh(true);
+      }
+    },
+    [gitRepoPropertiesQuery.data],
+  );
+
+  return {
+    needsRefresh,
+  } as const;
+}

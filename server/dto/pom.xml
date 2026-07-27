@@ -10,18 +10,9 @@
 		<version>${revision}</version>
 	</parent>
 
-	<artifactId>api</artifactId>
+	<artifactId>dto</artifactId>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.example.demo</groupId>
-			<artifactId>properties</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.example.demo</groupId>
-			<artifactId>dto</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>

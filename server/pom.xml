@@ -17,6 +17,7 @@
 	<version>${revision}</version>
 
 	<modules>
+		<module>dto</module>
 		<module>properties</module>
 		<module>api</module>
 		<module>app</module>
@@ -60,6 +61,12 @@
 			<dependency>
 				<groupId>com.example.demo</groupId>
 				<artifactId>properties</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.example.demo</groupId>
+				<artifactId>dto</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
