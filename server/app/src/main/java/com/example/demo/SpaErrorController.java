@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.demo.api.BaseRestController;
+
 @Controller
 public class SpaErrorController implements ErrorController {
 
@@ -25,7 +27,7 @@ public class SpaErrorController implements ErrorController {
 
         if (httpStatus == HttpStatus.NOT_FOUND) {
             // If the 404 did NOT originate from an API route, forward to index.html
-            if (requestUri != null && !requestUri.startsWith("/api")) {
+            if (requestUri != null && !requestUri.startsWith(BaseRestController.API_PREFIX_PATH)) {
                 return "forward:/index.html";
             }
         }
