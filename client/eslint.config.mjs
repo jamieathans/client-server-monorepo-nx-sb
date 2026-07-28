@@ -23,15 +23,27 @@ export default [
           depConstraints: [
             {
               sourceTag: 'type:app',
-              onlyDependOnLibsWithTags: ['type:ui', 'type:utils'],
+              onlyDependOnLibsWithTags: [
+                'type:ui',
+                'type:utils',
+                'type:type-defs',
+              ],
             },
             {
               sourceTag: 'type:ui',
-              onlyDependOnLibsWithTags: ['type:ui', 'type:utils'],
+              onlyDependOnLibsWithTags: [
+                'type:ui',
+                'type:utils',
+                'type:type-defs',
+              ],
             },
             {
               sourceTag: 'type:utils',
-              onlyDependOnLibsWithTags: ['type:utils'],
+              onlyDependOnLibsWithTags: ['type:utils', 'type:type-defs'],
+            },
+            {
+              sourceTag: 'type:type-defs',
+              onlyDependOnLibsWithTags: ['type:type-defs'],
             },
           ],
         },

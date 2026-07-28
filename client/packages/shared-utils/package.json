@@ -3,6 +3,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "dependencies": {
+    "@org/shared-types": "*"
+  },
   "nx": {
     "tags": [
       "type:utils"

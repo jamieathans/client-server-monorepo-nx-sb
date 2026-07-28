@@ -4,7 +4,8 @@
   "private": true,
   "dependencies": {
     "@org/shared-ui": "*",
-    "@org/shared-utils": "*"
+    "@org/shared-utils": "*",
+    "@org/shared-types": "*"
   },
   "nx": {
     "targets": {

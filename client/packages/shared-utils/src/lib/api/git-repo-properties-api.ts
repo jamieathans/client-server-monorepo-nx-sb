@@ -1,8 +1,5 @@
 import { BaseApi, FetchRequestInit } from './base-api';
-
-export interface GitRepoPropertiesDto {
-  commitId: string;
-}
+import { GitRepoPropertiesDto } from '@org/shared-types';
 
 export class GitRepoPropertiesApi extends BaseApi {
   async getProperties({ fetchInit }: { fetchInit?: FetchRequestInit } = {}) {

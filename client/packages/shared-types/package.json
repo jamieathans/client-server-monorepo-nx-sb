@@ -1,0 +1,11 @@
+{
+  "name": "@org/shared-types",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "nx": {
+    "tags": [
+      "type:type-defs"
+    ]
+  }
+}
