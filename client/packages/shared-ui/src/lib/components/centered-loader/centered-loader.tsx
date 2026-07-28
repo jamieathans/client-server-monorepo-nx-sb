@@ -4,7 +4,7 @@ import classes from './centered-loader.module.css';
 export function CenteredLoader() {
   return (
     <Center className={classes.root}>
-      <Loader color="blue" size="xl" />
+      <Loader color="red" size="xl" />
     </Center>
   );
 }
