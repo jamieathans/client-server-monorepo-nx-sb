@@ -13,7 +13,7 @@ export function useApplicationNeedsRefresh() {
         return false;
       }
 
-      return 5_000;
+      return 30_000;
     },
   });
 

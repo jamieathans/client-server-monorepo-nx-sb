@@ -1,4 +1,4 @@
-import { GitRepoPropertiesApi, GitRepoPropertiesDto } from '@org/shared-utils';
+import { GitRepoPropertiesApi } from '@org/shared-utils';
 import { queryOptions } from '@tanstack/react-query';
 
 export class GitRepoPropertiesQueryFactory {
@@ -8,7 +8,7 @@ export class GitRepoPropertiesQueryFactory {
   static propertiesQueryOptions() {
     return queryOptions({
       queryKey: GitRepoPropertiesQueryFactory.propertiesKey(),
-      queryFn: async ({ signal }): Promise<GitRepoPropertiesDto> => {
+      queryFn: async ({ signal }) => {
         try {
           const gitRepoProperties =
             await new GitRepoPropertiesApi().getProperties({
@@ -21,9 +21,7 @@ export class GitRepoPropertiesQueryFactory {
         } catch (error) {
           console.error('GitRepoPropertiesQueryFactory: queryFn error', error);
 
-          return {
-            commitId: '',
-          };
+          return null;
         }
       },
     });
