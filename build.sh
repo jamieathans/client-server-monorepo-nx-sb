@@ -1,7 +1,8 @@
 #!/bin/bash
 
 pushd server
-./mvnw clean process-classes
+./mvnw clean
+./mvnw process-classes
 popd
 
 pushd client
@@ -9,5 +10,5 @@ npm run build
 popd
 
 pushd server
-./mvnw clean install -DskipTests
+./mvnw install -DskipTests
 popd
