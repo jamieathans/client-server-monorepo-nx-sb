@@ -19,7 +19,7 @@ export function useApplicationNeedsRefresh() {
 
   useEffect(
     function checkIfApplicationNeedsRefresh() {
-      if (!gitRepoPropertiesQuery.data) {
+      if (!gitRepoPropertiesQuery.data?.commitId) {
         return;
       }
 
@@ -33,7 +33,7 @@ export function useApplicationNeedsRefresh() {
         setNeedsRefresh(true);
       }
     },
-    [gitRepoPropertiesQuery.data],
+    [gitRepoPropertiesQuery.data?.commitId],
   );
 
   return {
