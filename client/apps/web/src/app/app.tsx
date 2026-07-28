@@ -51,14 +51,16 @@ function Root() {
 
   useEffect(
     function showNotificationIfApplicationNeedsRefresh() {
-      showWarningNotification({
-        title: 'Application Refresh Required',
-        message:
-          'Please refresh the application by clicking the browser refresh button.',
-        allowClose: false,
-        withCloseButton: false,
-        autoClose: false,
-      });
+      if (needsRefresh) {
+        showWarningNotification({
+          title: 'Application Refresh Required',
+          message:
+            'Please refresh the application by clicking the browser refresh button.',
+          allowClose: false,
+          withCloseButton: false,
+          autoClose: false,
+        });
+      }
     },
     [needsRefresh],
   );
