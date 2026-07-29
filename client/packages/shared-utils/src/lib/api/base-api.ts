@@ -10,6 +10,10 @@ export abstract class BaseApi {
     return fetchInput;
   }
 
+  private static createErrorMessageFromResponse(response: Response) {
+    return `${response.status} - ${response.statusText}`;
+  }
+
   protected async get({
     fetchInput,
     fetchInit,
@@ -26,7 +30,7 @@ export abstract class BaseApi {
     );
 
     if (!response.ok) {
-      throw new Error(response.statusText);
+      throw new Error(BaseApi.createErrorMessageFromResponse(response));
     }
 
     return response;
@@ -54,7 +58,7 @@ export abstract class BaseApi {
     );
 
     if (!response.ok) {
-      throw new Error(response.statusText);
+      throw new Error(BaseApi.createErrorMessageFromResponse(response));
     }
 
     return response;

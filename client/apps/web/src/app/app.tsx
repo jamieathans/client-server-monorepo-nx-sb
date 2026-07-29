@@ -1,15 +1,17 @@
 import { createTheme, MantineProvider } from '@mantine/core';
 import { RouteManager } from '../route-manager/route-manager';
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter, useLocation, useNavigate } from 'react-router';
 import { Notifications } from '@mantine/notifications';
 import {
   showErrorNotification,
   showWarningNotification,
   useApplicationNeedsRefresh,
+  UsersQueryFactory,
 } from '@org/shared-ui';
 import { useEffect } from 'react';
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/query-core';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider, useQuery } from '@tanstack/react-query';
+import { RoutePaths } from '../route-paths';
 
 // Uncomment this line to use CSS modules
 // import styles from './app.module.css';
@@ -48,6 +50,31 @@ window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 
 function Root() {
   const { needsRefresh } = useApplicationNeedsRefresh();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { data: meQueryData, refetch: meQueryRefetch } = useQuery({
+    ...UsersQueryFactory.meQueryOptions(),
+  });
+
+  useEffect(
+    function redirectToLoginOrDefaultRoute() {
+      if (meQueryData === undefined) {
+        return;
+      }
+
+      if (meQueryData === null) {
+        // This corresponds to 401 unauthorised.
+        navigate(`/${RoutePaths.Login}`, { replace: true });
+      } else if (location.pathname === '/') {
+        navigate(`/${RoutePaths.Notifications}`, { replace: true });
+      }
+
+      // Refetch on every route change to check if login is still valid.
+      meQueryRefetch();
+    },
+    [location.pathname, meQueryData, meQueryRefetch, navigate],
+  );
 
   useEffect(
     function showNotificationIfApplicationNeedsRefresh() {
