@@ -8,21 +8,15 @@ export class GitRepoPropertiesQueryFactory {
   static propertiesQueryOptions() {
     return queryOptions({
       queryKey: GitRepoPropertiesQueryFactory.propertiesKey(),
-      queryFn: async ({ signal }) => {
-        try {
-          const gitRepoProperties =
-            await new GitRepoPropertiesApi().getProperties({
-              fetchInit: {
-                signal,
-              },
-            });
-
-          return gitRepoProperties;
-        } catch (error) {
-          console.error('GitRepoPropertiesQueryFactory: queryFn error', error);
-
-          return null;
-        }
+      queryFn: ({ signal }) => {
+        return new GitRepoPropertiesApi().getProperties({
+          fetchInit: {
+            signal,
+          },
+        });
+      },
+      meta: {
+        showErrorNotification: false,
       },
     });
   }
