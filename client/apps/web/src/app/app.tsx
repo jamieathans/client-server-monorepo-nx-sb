@@ -3,9 +3,11 @@ import { RouteManager } from '../route-manager/route-manager';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router';
 import { Notifications } from '@mantine/notifications';
 import {
+  ReturnUrlContextProvider,
   showErrorNotification,
   showWarningNotification,
   useApplicationNeedsRefresh,
+  useReturnUrlContext,
   UsersQueryFactory,
 } from '@org/shared-ui';
 import { useEffect } from 'react';
@@ -77,6 +79,7 @@ function Root() {
   const { needsRefresh } = useApplicationNeedsRefresh();
   const navigate = useNavigate();
   const location = useLocation();
+  const returnUrlContext = useReturnUrlContext();
 
   const { data: meQueryData, refetch: meQueryRefetch } = useQuery({
     ...UsersQueryFactory.meQueryOptions(),
@@ -89,16 +92,32 @@ function Root() {
       }
 
       if (meQueryData === null) {
-        // This corresponds to 401 unauthorised.
+        // This corresponds to 401 unauthorised, bounce to login.
+        if (!location.pathname.startsWith(`/${RoutePaths.Login}`)) {
+          const returnUrl = encodeURI(
+            `${location.pathname}${location.search}${location.hash}`,
+          );
+          returnUrlContext.setReturnUrl(returnUrl);
+        }
+
         navigate(`/${RoutePaths.Login}`, { replace: true });
       } else if (location.pathname === '/') {
+        // Navigate to default route.
         navigate(`/${RoutePaths.Notifications}`, { replace: true });
       }
 
       // Refetch on every route change to check if login is still valid.
       meQueryRefetch();
     },
-    [location.pathname, meQueryData, meQueryRefetch, navigate],
+    [
+      location.hash,
+      location.pathname,
+      location.search,
+      meQueryData,
+      meQueryRefetch,
+      navigate,
+      returnUrlContext,
+    ],
   );
 
   useEffect(
@@ -126,7 +145,9 @@ export function App() {
       <Notifications />
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-          <Root />
+          <ReturnUrlContextProvider>
+            <Root />
+          </ReturnUrlContextProvider>
         </QueryClientProvider>
       </BrowserRouter>
     </MantineProvider>
