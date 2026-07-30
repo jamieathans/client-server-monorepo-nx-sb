@@ -15,12 +15,6 @@ import { MutationCache, QueryCache, QueryClient } from '@tanstack/query-core';
 import { QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { RoutePaths } from '../route-paths';
 
-// Uncomment this line to use CSS modules
-// import styles from './app.module.css';
-//import { OrgSharedUi } from '@org/shared-ui';
-//import { sharedUtils } from '@org/shared-utils';
-//import NxWelcome from './nx-welcome';
-
 const theme = createTheme({/** Put your mantine theme override here */});
 
 const queryClient = new QueryClient({
@@ -92,7 +86,7 @@ function Root() {
       }
 
       if (meQueryData === null) {
-        // This corresponds to 401 unauthorised, bounce to login.
+        // "meQueryData === null" corresponds to 401 unauthorised, bounce to login.
         if (!location.pathname.startsWith(`/${RoutePaths.Login}`)) {
           const returnUrl = encodeURI(
             `${location.pathname}${location.search}${location.hash}`,
@@ -120,6 +114,7 @@ function Root() {
     ],
   );
 
+  // TODO: could be custom hook.
   useEffect(
     function showNotificationIfApplicationNeedsRefresh() {
       if (needsRefresh) {
@@ -135,6 +130,11 @@ function Root() {
     },
     [needsRefresh],
   );
+
+  // This will prevent the flicker of the RootLayout showing.
+  if (location.pathname === '/') {
+    return null;
+  }
 
   return <RouteManager />;
 }
