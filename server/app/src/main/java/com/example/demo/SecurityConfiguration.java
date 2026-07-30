@@ -49,6 +49,7 @@ public class SecurityConfiguration {
                                 .permitAll()
                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
+                                                .loginProcessingUrl("/api/login")
                                                 .successHandler((req, res, auth) -> res
                                                                 .setStatus(HttpStatus.OK.value()))
                                                 .failureHandler((req, res, auth) -> res
