@@ -23,16 +23,41 @@ const theme = createTheme({/** Put your mantine theme override here */});
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: (error) => {
+    onError: (error, query) => {
+      console.error('QueryCache.onError', error);
+
+      if (
+        typeof query.meta?.showErrorNotification === 'boolean' &&
+        query.meta.showErrorNotification === false
+      ) {
+        return;
+      }
+
+      const errorMessage =
+        typeof query.meta?.errorMessage === 'string' && query.meta.errorMessage;
+
       showErrorNotification({
-        message: error.message,
+        message: errorMessage || error.message,
       });
     },
   }),
   mutationCache: new MutationCache({
-    onError: (error) => {
+    onError: (error, variables, onMutateResult, mutation) => {
+      console.error('MutationCache.onError', error);
+
+      if (
+        typeof mutation.meta?.showErrorNotification === 'boolean' &&
+        mutation.meta.showErrorNotification === false
+      ) {
+        return;
+      }
+
+      const errorMessage =
+        typeof mutation.meta?.errorMessage === 'string' &&
+        mutation.meta.errorMessage;
+
       showErrorNotification({
-        message: error.message,
+        message: errorMessage || error.message,
       });
     },
   }),
