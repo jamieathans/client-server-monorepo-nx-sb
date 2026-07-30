@@ -14,12 +14,21 @@ export abstract class BaseApi {
     return `${response.status} - ${response.statusText}`;
   }
 
+  private static throwOnErrorIfResponseNotOk(
+    throwOnError: boolean,
+    response: Response,
+  ) {
+    return throwOnError && !response.ok;
+  }
+
   protected async get({
     fetchInput,
     fetchInit,
+    throwOnError = true,
   }: {
     fetchInput: FetchInput;
     fetchInit?: FetchRequestInit;
+    throwOnError?: boolean;
   }) {
     const response = await fetch(
       BaseApi.appendApiPrefixToStringInput(fetchInput),
@@ -29,7 +38,7 @@ export abstract class BaseApi {
       },
     );
 
-    if (!response.ok) {
+    if (BaseApi.throwOnErrorIfResponseNotOk(throwOnError, response)) {
       throw new Error(BaseApi.createErrorMessageFromResponse(response));
     }
 
@@ -40,10 +49,12 @@ export abstract class BaseApi {
     fetchInput,
     fetchInit,
     body,
+    throwOnError = true,
   }: {
     fetchInput: FetchInput;
     fetchInit?: FetchRequestInit;
     body?: unknown;
+    throwOnError?: boolean;
   }) {
     const response = await fetch(
       BaseApi.appendApiPrefixToStringInput(fetchInput),
@@ -57,7 +68,7 @@ export abstract class BaseApi {
       },
     );
 
-    if (!response.ok) {
+    if (BaseApi.throwOnErrorIfResponseNotOk(throwOnError, response)) {
       throw new Error(BaseApi.createErrorMessageFromResponse(response));
     }
 
