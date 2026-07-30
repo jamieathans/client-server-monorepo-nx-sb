@@ -1,6 +1,12 @@
 export type FetchRequestInit = Omit<RequestInit, 'method'>;
 export type FetchInput = string | URL | Request;
 
+interface CommonOptions {
+  fetchInput: FetchInput;
+  fetchInit?: FetchRequestInit;
+  throwOnError?: boolean;
+}
+
 export abstract class BaseApi {
   private static appendApiPrefixToStringInput(fetchInput: FetchInput) {
     if (typeof fetchInput === 'string') {
@@ -25,11 +31,7 @@ export abstract class BaseApi {
     fetchInput,
     fetchInit,
     throwOnError = true,
-  }: {
-    fetchInput: FetchInput;
-    fetchInit?: FetchRequestInit;
-    throwOnError?: boolean;
-  }) {
+  }: CommonOptions) {
     const response = await fetch(
       BaseApi.appendApiPrefixToStringInput(fetchInput),
       {
@@ -50,11 +52,8 @@ export abstract class BaseApi {
     fetchInit,
     body,
     throwOnError = true,
-  }: {
-    fetchInput: FetchInput;
-    fetchInit?: FetchRequestInit;
+  }: CommonOptions & {
     body?: unknown;
-    throwOnError?: boolean;
   }) {
     const response = await fetch(
       BaseApi.appendApiPrefixToStringInput(fetchInput),

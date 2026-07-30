@@ -23,18 +23,6 @@ function SuspenseFallback() {
 }
 
 export function RouteManager() {
-  // const navigate = useNavigate();
-  // const location = useLocation();
-
-  // useEffect(
-  //   function redirectToDefaultRoute() {
-  //     if (location.pathname === '/') {
-  //       navigate(`${RoutePaths.Notifications}`, { replace: true });
-  //     }
-  //   },
-  //   [location.pathname, navigate],
-  // );
-
   return (
     <Suspense fallback={<SuspenseFallback />}>
       <Routes>
