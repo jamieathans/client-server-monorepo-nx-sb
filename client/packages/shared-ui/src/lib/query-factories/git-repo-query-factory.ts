@@ -1,15 +1,15 @@
-import { GitRepoPropertiesApi } from '@org/shared-utils';
+import { GitRepoApi } from '@org/shared-utils';
 import { queryOptions } from '@tanstack/react-query';
 
-export class GitRepoPropertiesQueryFactory {
-  static propertiesKey() {
-    return ['git-repo-properties'] as const;
+export class GitRepoQueryFactory {
+  static gitRepoKey() {
+    return ['git-repo'] as const;
   }
   static propertiesQueryOptions() {
     return queryOptions({
-      queryKey: GitRepoPropertiesQueryFactory.propertiesKey(),
+      queryKey: [...GitRepoQueryFactory.gitRepoKey(), 'properties'],
       queryFn: ({ signal }) => {
-        return new GitRepoPropertiesApi().getProperties({
+        return new GitRepoApi().getProperties({
           fetchInit: {
             signal,
           },

@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import com.example.demo.api.BaseRestController;
-import com.example.demo.api.GitRepoPropertiesController;
+import com.example.demo.api.GitRepoController;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -45,7 +45,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/error").permitAll()
                                 // Allow checking if app needs refreshing.
                                 .requestMatchers(BaseRestController.API_PREFIX_PATH
-                                                + GitRepoPropertiesController.PROPERTIES_PATH)
+                                                + GitRepoController.PROPERTIES_PATH)
                                 .permitAll()
                                 .anyRequest().authenticated())
                                 .formLogin(form -> form

@@ -8,14 +8,6 @@ interface CommonOptions {
 }
 
 export abstract class BaseApi {
-  private static appendApiPrefixToStringInput(fetchInput: FetchInput) {
-    if (typeof fetchInput === 'string') {
-      return `/api${fetchInput}`;
-    }
-
-    return fetchInput;
-  }
-
   private static createErrorMessageFromResponse(response: Response) {
     return `${response.status} - ${response.statusText}`;
   }
@@ -27,13 +19,27 @@ export abstract class BaseApi {
     return throwOnError && !response.ok;
   }
 
+  private apiPrefix = '';
+
+  private appendApiPrefixToStringInput(fetchInput: FetchInput) {
+    if (typeof fetchInput === 'string') {
+      return `/api${this.apiPrefix}${fetchInput}`;
+    }
+
+    return fetchInput;
+  }
+
+  protected constructor(apiPrefix: string) {
+    this.apiPrefix = apiPrefix;
+  }
+
   protected async get({
     fetchInput,
     fetchInit,
     throwOnError = true,
   }: CommonOptions) {
     const response = await fetch(
-      BaseApi.appendApiPrefixToStringInput(fetchInput),
+      this.appendApiPrefixToStringInput(fetchInput),
       {
         method: 'GET',
         ...fetchInit,
@@ -56,7 +62,7 @@ export abstract class BaseApi {
     body?: unknown;
   }) {
     const response = await fetch(
-      BaseApi.appendApiPrefixToStringInput(fetchInput),
+      this.appendApiPrefixToStringInput(fetchInput),
       {
         method: 'POST',
         headers: {

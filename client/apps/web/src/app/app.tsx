@@ -3,12 +3,13 @@ import { RouteManager } from '../route-manager/route-manager';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router';
 import { Notifications } from '@mantine/notifications';
 import {
+  AuthenticationQueryFactory,
+  FullScreenLoader,
   ReturnUrlContextProvider,
   showErrorNotification,
   showWarningNotification,
   useApplicationNeedsRefresh,
   useReturnUrlContext,
-  UsersQueryFactory,
 } from '@org/shared-ui';
 import { useEffect } from 'react';
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/query-core';
@@ -75,46 +76,44 @@ function Root() {
   const location = useLocation();
   const returnUrlContext = useReturnUrlContext();
 
-  const { data: meQueryData, refetch: meQueryRefetch } = useQuery({
-    ...UsersQueryFactory.meQueryOptions(),
+  const { data: isAuthenticatedData } = useQuery({
+    ...AuthenticationQueryFactory.isAuthenticatedQueryOptions(),
   });
 
   useEffect(
-    function redirectToLoginOrDefaultRoute() {
-      if (meQueryData === undefined) {
-        return;
+    function redirectToDefaultRoute() {
+      if (location.pathname === '/') {
+        // This could be more complex based on feature flags etc.
+        navigate(`/${RoutePaths.Notifications}`, { replace: true });
       }
+    },
+    [location.pathname, navigate],
+  );
 
-      if (meQueryData === null) {
-        // "meQueryData === null" corresponds to 401 unauthorised, bounce to login.
+  useEffect(
+    function redirectToLoginRouteIfNotAuthenticated() {
+      if (isAuthenticatedData === false) {
+        // Don't redirect to login if already there.
         if (!location.pathname.startsWith(`/${RoutePaths.Login}`)) {
           const returnUrl = encodeURI(
             `${location.pathname}${location.search}${location.hash}`,
           );
           returnUrlContext.setReturnUrl(returnUrl);
+
+          navigate(`/${RoutePaths.Login}`, { replace: true });
         }
-
-        navigate(`/${RoutePaths.Login}`, { replace: true });
-      } else if (location.pathname === '/') {
-        // Navigate to default route.
-        navigate(`/${RoutePaths.Notifications}`, { replace: true });
       }
-
-      // Refetch on every route change to check if login is still valid.
-      meQueryRefetch();
     },
     [
+      isAuthenticatedData,
       location.hash,
       location.pathname,
       location.search,
-      meQueryData,
-      meQueryRefetch,
       navigate,
       returnUrlContext,
     ],
   );
 
-  // TODO: could be custom hook.
   useEffect(
     function showNotificationIfApplicationNeedsRefresh() {
       if (needsRefresh) {
@@ -132,8 +131,8 @@ function Root() {
   );
 
   // This will prevent the flicker of the RootLayout showing.
-  if (location.pathname === '/') {
-    return null;
+  if (location.pathname === '/' || isAuthenticatedData === undefined) {
+    return <FullScreenLoader />;
   }
 
   return <RouteManager />;

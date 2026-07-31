@@ -2,13 +2,13 @@ import { BaseApi, FetchRequestInit } from './base-api';
 import { AuthenticatedUserDto } from '@org/shared-types';
 
 export class UsersApi extends BaseApi {
-  private static appendApiPrefix(input: string): string {
-    return `/users${input}`;
+  constructor() {
+    super('/users');
   }
 
   async getMe({ fetchInit }: { fetchInit?: FetchRequestInit } = {}) {
     const response = await super.get({
-      fetchInput: UsersApi.appendApiPrefix('/me'),
+      fetchInput: '/me',
       fetchInit,
     });
 

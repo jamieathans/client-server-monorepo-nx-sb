@@ -9,9 +9,9 @@ import com.example.demo.dto.AuthenticatedUserDto;
 @RestController
 public class UsersController extends BaseRestController {
 
-    private static final String API_PREFIX = "/users";
+    private static final String API_PREFIX_PATH = "/users";
 
-    @GetMapping(UsersController.API_PREFIX + "/me")
+    @GetMapping(API_PREFIX_PATH + "/me")
     public AuthenticatedUserDto me(Authentication authentication) {
 
         var user = new AuthenticatedUserDto(authentication.getName());

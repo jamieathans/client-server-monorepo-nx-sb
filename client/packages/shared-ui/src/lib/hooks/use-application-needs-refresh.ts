@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { GitRepoPropertiesQueryFactory } from '../query-factories/git-repo-properties-query-factory';
+import { GitRepoQueryFactory } from '../query-factories/git-repo-query-factory';
 import { useEffect, useRef, useState } from 'react';
 
 export function useApplicationNeedsRefresh() {
@@ -7,7 +7,7 @@ export function useApplicationNeedsRefresh() {
   const commitIdRef = useRef('');
 
   const gitRepoPropertiesQuery = useQuery({
-    ...GitRepoPropertiesQueryFactory.propertiesQueryOptions(),
+    ...GitRepoQueryFactory.propertiesQueryOptions(),
     refetchInterval: () => {
       if (needsRefresh) {
         return false;
