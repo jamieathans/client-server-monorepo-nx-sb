@@ -71,6 +71,28 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>cz.habarta.typescript-generator</groupId>
+				<artifactId>typescript-generator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<?m2e ignore?>
+						<id>generate-typescript-definition</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<jsonLibrary>jackson3</jsonLibrary>
+							<outputKind>module</outputKind>
+							<classPatterns>
+								<pattern>com.example.demo.dto.**</pattern>
+							</classPatterns>
+							<outputFile>${project.build.directory}/dto.d.ts</outputFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
