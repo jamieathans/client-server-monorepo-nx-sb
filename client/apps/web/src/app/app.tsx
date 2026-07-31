@@ -76,9 +76,9 @@ function Root() {
   const location = useLocation();
   const returnUrlContext = useReturnUrlContext();
 
-  const { data: isAuthenticatedData } = useQuery({
-    ...AuthenticationQueryFactory.isAuthenticatedQueryOptions(),
-  });
+  const { data: isAuthenticatedData } = useQuery(
+    AuthenticationQueryFactory.isAuthenticatedQueryOptions(),
+  );
 
   useEffect(
     function redirectToDefaultRoute() {

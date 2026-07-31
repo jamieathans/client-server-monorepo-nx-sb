@@ -11,6 +11,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
+import com.example.demo.api.AuthenticationController;
 import com.example.demo.api.BaseRestController;
 import com.example.demo.api.GitRepoController;
 
@@ -37,19 +38,21 @@ public class SecurityConfiguration {
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
 
-                httpSecurity.authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers(SecurityConfiguration.FRONT_END_ASSETS).permitAll()
-                                .requestMatchers(SecurityConfiguration.FRONT_END_ROUTES).permitAll()
-                                // Required to forward the front end routes to index.html via the
-                                // SpaErrorController.
-                                .requestMatchers("/error").permitAll()
-                                // Allow checking if app needs refreshing.
-                                .requestMatchers(BaseRestController.API_PREFIX_PATH
-                                                + GitRepoController.PROPERTIES_PATH)
-                                .permitAll()
-                                .anyRequest().authenticated())
+                httpSecurity.csrf(csrf -> csrf.disable()) // TODO
+                                .authorizeHttpRequests(authorize -> authorize
+                                                .requestMatchers(SecurityConfiguration.FRONT_END_ASSETS).permitAll()
+                                                .requestMatchers(SecurityConfiguration.FRONT_END_ROUTES).permitAll()
+                                                // Required to forward the front end routes to index.html via the
+                                                // SpaErrorController.
+                                                .requestMatchers("/error").permitAll()
+                                                // Allow checking if app needs refreshing.
+                                                .requestMatchers(BaseRestController.API_PREFIX_PATH
+                                                                + GitRepoController.PROPERTIES_PATH)
+                                                .permitAll()
+                                                .anyRequest().authenticated())
                                 .formLogin(form -> form
-                                                .loginProcessingUrl("/api/login")
+                                                .loginProcessingUrl(BaseRestController.API_PREFIX_PATH
+                                                                + AuthenticationController.API_PREFIX_PATH + "/login")
                                                 .successHandler((req, res, auth) -> res
                                                                 .setStatus(HttpStatus.OK.value()))
                                                 .failureHandler((req, res, auth) -> res

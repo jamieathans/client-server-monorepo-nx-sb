@@ -9,3 +9,4 @@ export * from './lib/query-factories/users-query-factory';
 export * from './lib/context/return-url-context';
 export * from './lib/components/full-screen-loader/full-screen-loader';
 export * from './lib/query-factories/authentication-query-factory';
+export * from './lib/mutations/login-mutation';
