@@ -11,7 +11,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
-import com.example.demo.api.AuthenticationController;
 import com.example.demo.api.BaseRestController;
 import com.example.demo.api.GitRepoController;
 
@@ -52,7 +51,7 @@ public class SecurityConfiguration {
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
                                                 .loginProcessingUrl(BaseRestController.API_PREFIX_PATH
-                                                                + AuthenticationController.API_PREFIX_PATH + "/login")
+                                                                + "/authentication/login")
                                                 .successHandler((req, res, auth) -> res
                                                                 .setStatus(HttpStatus.OK.value()))
                                                 .failureHandler((req, res, auth) -> res
@@ -66,6 +65,7 @@ public class SecurityConfiguration {
 
         @Bean
         public UserDetailsService userDetailsService() {
+                @SuppressWarnings("deprecation")
                 var userBuilder = User.withDefaultPasswordEncoder();
 
                 var jamie = userBuilder.username("jamie").password("password").roles("USER").build();

@@ -1,6 +1,7 @@
 import { AuthenticationApi } from '@org/shared-utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AuthenticationQueryFactory } from '../query-factories/authentication-query-factory';
+import { queryMeta } from '../utils/query-utils';
 
 export function useLoginMutation() {
   const queryClient = useQueryClient();
@@ -19,8 +20,8 @@ export function useLoginMutation() {
           AuthenticationQueryFactory.isAuthenticatedQueryOptions().queryKey,
       });
     },
-    meta: {
-      showErrorNotification: false,
-    },
+    meta: queryMeta({
+      errorMessage: false,
+    }),
   });
 }

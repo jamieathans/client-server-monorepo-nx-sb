@@ -5,60 +5,16 @@ import { Notifications } from '@mantine/notifications';
 import {
   AuthenticationQueryFactory,
   FullScreenLoader,
+  queryClient,
   ReturnUrlContextProvider,
-  showErrorNotification,
-  showWarningNotification,
-  useApplicationNeedsRefresh,
   useReturnUrlContext,
+  useShowNotificationIfApplicationNeedsRefresh,
 } from '@org/shared-ui';
 import { useEffect } from 'react';
-import { MutationCache, QueryCache, QueryClient } from '@tanstack/query-core';
 import { QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { RoutePaths } from '../route-paths';
 
 const theme = createTheme({/** Put your mantine theme override here */});
-
-const queryClient = new QueryClient({
-  queryCache: new QueryCache({
-    onError: (error, query) => {
-      console.error('QueryCache.onError', error);
-
-      if (
-        typeof query.meta?.showErrorNotification === 'boolean' &&
-        query.meta.showErrorNotification === false
-      ) {
-        return;
-      }
-
-      const errorMessage =
-        typeof query.meta?.errorMessage === 'string' && query.meta.errorMessage;
-
-      showErrorNotification({
-        message: errorMessage || error.message,
-      });
-    },
-  }),
-  mutationCache: new MutationCache({
-    onError: (error, variables, onMutateResult, mutation) => {
-      console.error('MutationCache.onError', error);
-
-      if (
-        typeof mutation.meta?.showErrorNotification === 'boolean' &&
-        mutation.meta.showErrorNotification === false
-      ) {
-        return;
-      }
-
-      const errorMessage =
-        typeof mutation.meta?.errorMessage === 'string' &&
-        mutation.meta.errorMessage;
-
-      showErrorNotification({
-        message: errorMessage || error.message,
-      });
-    },
-  }),
-});
 
 // This code is only for TypeScript
 declare global {
@@ -71,7 +27,8 @@ declare global {
 window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 
 function Root() {
-  const { needsRefresh } = useApplicationNeedsRefresh();
+  useShowNotificationIfApplicationNeedsRefresh();
+
   const navigate = useNavigate();
   const location = useLocation();
   const returnUrlContext = useReturnUrlContext();
@@ -112,22 +69,6 @@ function Root() {
       navigate,
       returnUrlContext,
     ],
-  );
-
-  useEffect(
-    function showNotificationIfApplicationNeedsRefresh() {
-      if (needsRefresh) {
-        showWarningNotification({
-          title: 'Application Refresh Required',
-          message:
-            'Please refresh the application by clicking the browser refresh button.',
-          allowClose: false,
-          withCloseButton: false,
-          autoClose: false,
-        });
-      }
-    },
-    [needsRefresh],
   );
 
   // This will prevent the flicker of the RootLayout showing.

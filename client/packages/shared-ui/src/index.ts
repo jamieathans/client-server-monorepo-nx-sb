@@ -10,3 +10,5 @@ export * from './lib/context/return-url-context';
 export * from './lib/components/full-screen-loader/full-screen-loader';
 export * from './lib/query-factories/authentication-query-factory';
 export * from './lib/mutations/login-mutation';
+export * from './lib/utils/query-utils';
+export * from './lib/hooks/use-show-notification-if-application-needs-refresh';

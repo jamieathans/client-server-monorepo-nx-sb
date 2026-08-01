@@ -9,3 +9,4 @@ export function getStatusCodeFromApiError(error: unknown) {
 
   return NaN;
 }
+

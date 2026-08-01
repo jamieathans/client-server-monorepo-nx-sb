@@ -1,5 +1,6 @@
 import { GitRepoApi } from '@org/shared-utils';
 import { queryOptions } from '@tanstack/react-query';
+import { queryMeta } from '../utils/query-utils';
 
 export class GitRepoQueryFactory {
   static gitRepoKey() {
@@ -15,9 +16,9 @@ export class GitRepoQueryFactory {
           },
         });
       },
-      meta: {
-        showErrorNotification: false,
-      },
+      meta: queryMeta({
+        errorMessage: false,
+      }),
     });
   }
 }

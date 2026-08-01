@@ -46,7 +46,7 @@ function LoginRoute() {
   useEffect(
     function navigateToDefaultRouteIfAuthenticated() {
       if (isAuthenticatedData) {
-        navigate('/');
+        navigate('/', { replace: true });
       }
     },
     [isAuthenticatedData, navigate],
@@ -56,9 +56,7 @@ function LoginRoute() {
     <div>
       <div>The Login Page: returnUrl = {returnUrlContext.getReturnUrl()}</div>
       <Button onClick={handleLogin}>Login</Button>
-      {loginMutation.isError && (
-        <div>Login Failed</div>
-      )}
+      {loginMutation.isError && <div>Login Failed</div>}
     </div>
   );
 }
