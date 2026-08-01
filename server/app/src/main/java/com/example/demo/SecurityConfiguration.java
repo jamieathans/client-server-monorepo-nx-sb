@@ -16,7 +16,7 @@ import com.example.demo.api.BaseRestController;
 import com.example.demo.api.GitRepoController;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfiguration {
 
         // Static assets from front end build.
