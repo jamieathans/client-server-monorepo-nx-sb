@@ -37,7 +37,7 @@ public class SecurityConfiguration {
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
 
-                httpSecurity.csrf(csrf -> csrf.disable()) // TODO
+                httpSecurity.csrf(csrf -> csrf.spa())
                                 .authorizeHttpRequests(authorize -> authorize
                                                 .requestMatchers(SecurityConfiguration.FRONT_END_ASSETS).permitAll()
                                                 .requestMatchers(SecurityConfiguration.FRONT_END_ROUTES).permitAll()

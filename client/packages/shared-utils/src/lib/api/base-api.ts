@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 export type FetchRequestInit = Omit<RequestInit, 'method'>;
 export type FetchInput = string | URL | Request;
 
@@ -17,6 +19,10 @@ export abstract class BaseApi {
     response: Response,
   ) {
     return throwOnError && !response.ok;
+  }
+
+  protected static getCsrfCookie() {
+    return Cookies.get('XSRF-TOKEN');
   }
 
   private apiPrefix = '';
@@ -67,6 +73,7 @@ export abstract class BaseApi {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': BaseApi.getCsrfCookie(),
         },
         body: JSON.stringify(body),
         ...fetchInit,

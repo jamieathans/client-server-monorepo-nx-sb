@@ -32,6 +32,7 @@ export class AuthenticationApi extends BaseApi {
       fetchInit: {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
+          'X-XSRF-TOKEN': BaseApi.getCsrfCookie(),
         },
         body: params,
         ...fetchInit,
