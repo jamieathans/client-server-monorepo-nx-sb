@@ -17,18 +17,6 @@ function LoginRoute() {
   );
 
   function handleLogin() {
-    // try {
-    //   await loginMutation.mutateAsync({
-    //     username: 'jamie',
-    //     password: 'password',
-    //   });
-
-    //   navigate(returnUrlContext.getReturnUrl() || '/');
-
-    // } catch (error) {
-    //   console.log('loginMutation.mutateAsync error', error);
-    // }
-
     loginMutation.mutate(
       {
         username: 'jamie',

@@ -39,4 +39,11 @@ export class AuthenticationApi extends BaseApi {
       },
     });
   }
+
+  logout({ fetchInit }: { fetchInit?: FetchRequestInit } = {}) {
+    return super.post({
+      fetchInput: '/logout',
+      fetchInit,
+    });
+  }
 }

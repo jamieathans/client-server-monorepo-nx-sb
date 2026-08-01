@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 import com.example.demo.api.BaseRestController;
 import com.example.demo.api.GitRepoController;
@@ -56,6 +57,12 @@ public class SecurityConfiguration {
                                                                 .setStatus(HttpStatus.OK.value()))
                                                 .failureHandler((req, res, auth) -> res
                                                                 .setStatus(HttpStatus.UNAUTHORIZED.value())))
+                                .logout(logout -> logout
+                                                .logoutUrl(BaseRestController.API_PREFIX_PATH
+                                                                + "/authentication/logout")
+                                                // Prevent redirection; return 200 OK instead
+                                                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(
+                                                                HttpStatus.OK)))
                                 .exceptionHandling(ex -> ex
                                                 .authenticationEntryPoint(
                                                                 new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));

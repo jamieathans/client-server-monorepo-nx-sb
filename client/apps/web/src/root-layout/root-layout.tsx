@@ -1,6 +1,6 @@
 import { AppShell, Burger, Group, ScrollArea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { ColourSchemeToggle, NavLink } from '@org/shared-ui';
+import { ColourSchemeToggle, Logout, NavLink } from '@org/shared-ui';
 import classes from './root-layout.module.css';
 import { Outlet } from 'react-router';
 import { RoutePaths } from '../route-paths';
@@ -27,6 +27,7 @@ export function RootLayout() {
           />
           <Group className={classes.headerRightAlignedGroup}>
             <ColourSchemeToggle />
+            <Logout />
           </Group>
         </Group>
       </AppShell.Header>

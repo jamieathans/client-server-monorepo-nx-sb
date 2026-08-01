@@ -1,10 +1,6 @@
-import {
-  ActionIcon,
-  useComputedColorScheme,
-  useMantineColorScheme,
-} from '@mantine/core';
+import { useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { SunIcon, MoonIcon } from '@phosphor-icons/react';
-import classes from './colour-scheme-toggle.module.css';
+import { HeaderIcon } from '../header-icon/header-icon';
 
 export function ColourSchemeToggle() {
   const { setColorScheme } = useMantineColorScheme();
@@ -15,14 +11,9 @@ export function ColourSchemeToggle() {
   }
 
   return (
-    <ActionIcon
-      variant="default"
-      size="xl"
-      aria-label="Toggle color scheme"
-      onClick={handleClick}
-    >
-      {computedColorScheme === 'dark' && <SunIcon className={classes.icon} />}
-      {computedColorScheme === 'light' && <MoonIcon className={classes.icon} />}
-    </ActionIcon>
+    <HeaderIcon ariaLabel="Toggle color scheme" onClick={handleClick}>
+      {computedColorScheme === 'dark' && <SunIcon />}
+      {computedColorScheme === 'light' && <MoonIcon />}
+    </HeaderIcon>
   );
 }
