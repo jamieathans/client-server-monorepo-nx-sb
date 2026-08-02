@@ -1,0 +1,11 @@
+.root {
+  height: 100vh;
+}
+
+.form {
+  width: 20%;
+}
+
+.loginFailedText {
+  color: var(--mantine-color-error);
+}

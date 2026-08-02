@@ -6,12 +6,10 @@ export class AuthenticationApi extends BaseApi {
   }
 
   async isAuthenticated({ fetchInit }: { fetchInit?: FetchRequestInit } = {}) {
-    const response = await super.get({
+    return super.get({
       fetchInput: '/is-authenticated',
       fetchInit,
     });
-
-    return (await response.json()) as boolean;
   }
 
   login({

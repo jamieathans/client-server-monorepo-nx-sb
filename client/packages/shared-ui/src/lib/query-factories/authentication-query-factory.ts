@@ -3,6 +3,7 @@ import {
   getStatusCodeFromApiError,
 } from '@org/shared-utils';
 import { queryOptions } from '@tanstack/react-query';
+import { queryMeta } from '../utils/query-utils';
 
 export class AuthenticationQueryFactory {
   static authenticationKey() {
@@ -17,15 +18,13 @@ export class AuthenticationQueryFactory {
       ],
       queryFn: async ({ signal }) => {
         try {
-          const isAuthenticated = await new AuthenticationApi().isAuthenticated(
-            {
-              fetchInit: {
-                signal,
-              },
+          await new AuthenticationApi().isAuthenticated({
+            fetchInit: {
+              signal,
             },
-          );
+          });
 
-          return isAuthenticated;
+          return true;
         } catch (error) {
           const statusCode = getStatusCodeFromApiError(error);
 
@@ -37,6 +36,10 @@ export class AuthenticationQueryFactory {
           throw error;
         }
       },
+      meta: queryMeta({
+        errorMessage:
+          'There was an error checking the authentication status. Please try refreshing your browser and/or closing the tab.',
+      }),
     });
   }
 }
