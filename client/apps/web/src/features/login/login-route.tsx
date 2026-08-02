@@ -5,6 +5,7 @@ import {
   TextInput,
   Text,
   PasswordInput,
+  Stack,
 } from '@mantine/core';
 import { useLoginMutation, useReturnUrlContext } from '@org/shared-ui';
 import { useNavigate } from 'react-router';
@@ -76,25 +77,28 @@ function LoginRoute() {
           handleLogin(values);
         })}
       >
-        <TextInput
-          {...form.getInputProps('username')}
-          key={form.key('username')}
-          label="Username"
-          placeholder="Username"
-        />
-        <PasswordInput
-          {...form.getInputProps('password')}
-          key={form.key('password')}
-          mt="md"
-          label="Password"
-          placeholder="Password"
-        />
-        <Group justify="flex-end" mt="md">
-          {loginMutation.data === false && (
-            <Text className={classes.loginFailedText}>login failed</Text>
-          )}
-          <Button type="submit">Submit</Button>
-        </Group>
+        <Stack>
+          <TextInput
+            {...form.getInputProps('username')}
+            key={form.key('username')}
+            label="Username"
+            placeholder="Username"
+            withAsterisk
+          />
+          <PasswordInput
+            {...form.getInputProps('password')}
+            key={form.key('password')}
+            label="Password"
+            placeholder="Password"
+            withAsterisk
+          />
+          <Group justify="flex-end">
+            {loginMutation.data === false && (
+              <Text className={classes.loginFailedText}>login failed</Text>
+            )}
+            <Button type="submit">Submit</Button>
+          </Group>
+        </Stack>
       </form>
     </Center>
   );
