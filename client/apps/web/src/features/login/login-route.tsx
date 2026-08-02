@@ -1,4 +1,11 @@
-import { Button, Center, Group, TextInput, Text } from '@mantine/core';
+import {
+  Button,
+  Center,
+  Group,
+  TextInput,
+  Text,
+  PasswordInput,
+} from '@mantine/core';
 import { useLoginMutation, useReturnUrlContext } from '@org/shared-ui';
 import { useNavigate } from 'react-router';
 import classes from './login-route.module.css';
@@ -15,7 +22,9 @@ function LoginRoute() {
       username: '',
       password: '',
     },
-
+    onValuesChange: () => {
+      loginMutation.reset();
+    },
     validate: {
       username: (value) => {
         if (value.trim().length > 0) {
@@ -73,7 +82,7 @@ function LoginRoute() {
           label="Username"
           placeholder="Username"
         />
-        <TextInput
+        <PasswordInput
           {...form.getInputProps('password')}
           key={form.key('password')}
           mt="md"
