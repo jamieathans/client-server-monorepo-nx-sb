@@ -6,13 +6,12 @@ import {
   AuthenticationQueryFactory,
   FullScreenLoader,
   queryClient,
-  ReturnUrlContextProvider,
-  useReturnUrlContext,
   useShowNotificationIfApplicationNeedsRefresh,
 } from '@org/shared-ui';
 import { useEffect, useEffectEvent } from 'react';
 import { QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { RoutePaths } from '../route-paths';
+import { SearchParams } from '../search-params';
 
 const theme = createTheme({/** Put your mantine theme override here */});
 
@@ -31,7 +30,6 @@ function Root() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const returnUrlContext = useReturnUrlContext();
 
   const { data: isAuthenticatedData } = useQuery(
     AuthenticationQueryFactory.isAuthenticatedQueryOptions(),
@@ -53,9 +51,10 @@ function Root() {
       const returnUrl = encodeURI(
         `${location.pathname}${location.search}${location.hash}`,
       );
-      returnUrlContext.setReturnUrl(returnUrl);
 
-      navigate(`/${RoutePaths.Login}`, { replace: true });
+      navigate(`/${RoutePaths.Login}?${SearchParams.ReturnUrl}=${returnUrl}`, {
+        replace: true,
+      });
     }
   });
 
@@ -82,9 +81,7 @@ export function App() {
       <Notifications />
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-          <ReturnUrlContextProvider>
-            <Root />
-          </ReturnUrlContextProvider>
+          <Root />
         </QueryClientProvider>
       </BrowserRouter>
     </MantineProvider>

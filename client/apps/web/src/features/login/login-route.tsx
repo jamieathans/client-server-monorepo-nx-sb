@@ -7,15 +7,16 @@ import {
   PasswordInput,
   Stack,
 } from '@mantine/core';
-import { useLoginMutation, useReturnUrlContext } from '@org/shared-ui';
-import { useNavigate } from 'react-router';
+import { useLoginMutation } from '@org/shared-ui';
+import { useNavigate, useSearchParams } from 'react-router';
 import classes from './login-route.module.css';
 import { useForm } from '@mantine/form';
+import { SearchParams } from '../../search-params';
 
 function LoginRoute() {
-  const returnUrlContext = useReturnUrlContext();
   const navigate = useNavigate();
   const loginMutation = useLoginMutation();
+  const [searchParams] = useSearchParams();
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -57,12 +58,10 @@ function LoginRoute() {
         password,
       },
       {
-        onSuccess: async (loginSuccess) => {
+        onSuccess: (loginSuccess) => {
           if (loginSuccess) {
-            await navigate(returnUrlContext.getReturnUrl() || '/', {
-              replace: true,
-            });
-            returnUrlContext.setReturnUrl('');
+            const returnUrl = searchParams.get(SearchParams.ReturnUrl);
+            navigate(returnUrl || '/', { replace: true });
           }
         },
       },
