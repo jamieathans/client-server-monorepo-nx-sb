@@ -1,7 +1,7 @@
+import { HeaderIcon, useLogoutMutation } from '@org/shared-ui';
 import { SignOutIcon } from '@phosphor-icons/react';
-import { HeaderIcon } from '../header-icon/header-icon';
-import { useLogoutMutation } from '../../mutations/logout-mutation';
 import { useNavigate } from 'react-router';
+import { RoutePaths } from '../../route-paths';
 
 export function Logout() {
   const logoutMutation = useLogoutMutation();
@@ -10,7 +10,7 @@ export function Logout() {
   function handleClick() {
     logoutMutation.mutate(undefined, {
       onSuccess: async () => {
-        await navigate('/');
+        await navigate(`/${RoutePaths.Login}`);
         window.location.reload();
       },
     });

@@ -10,7 +10,7 @@ import {
   useReturnUrlContext,
   useShowNotificationIfApplicationNeedsRefresh,
 } from '@org/shared-ui';
-import { useEffect } from 'react';
+import { useEffect, useEffectEvent } from 'react';
 import { QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { RoutePaths } from '../route-paths';
 
@@ -47,28 +47,25 @@ function Root() {
     [location.pathname, navigate],
   );
 
+  const onRequiresAuthentication = useEffectEvent(() => {
+    // Don't redirect to login if already there.
+    if (!location.pathname.startsWith(`/${RoutePaths.Login}`)) {
+      const returnUrl = encodeURI(
+        `${location.pathname}${location.search}${location.hash}`,
+      );
+      returnUrlContext.setReturnUrl(returnUrl);
+
+      navigate(`/${RoutePaths.Login}`, { replace: true });
+    }
+  });
+
   useEffect(
     function redirectToLoginRouteIfNotAuthenticated() {
       if (isAuthenticatedData === false) {
-        // Don't redirect to login if already there.
-        if (!location.pathname.startsWith(`/${RoutePaths.Login}`)) {
-          const returnUrl = encodeURI(
-            `${location.pathname}${location.search}${location.hash}`,
-          );
-          returnUrlContext.setReturnUrl(returnUrl);
-
-          navigate(`/${RoutePaths.Login}`, { replace: true });
-        }
+        onRequiresAuthentication();
       }
     },
-    [
-      isAuthenticatedData,
-      location.hash,
-      location.pathname,
-      location.search,
-      navigate,
-      returnUrlContext,
-    ],
+    [isAuthenticatedData],
   );
 
   // This will prevent the flicker of the RootLayout showing.

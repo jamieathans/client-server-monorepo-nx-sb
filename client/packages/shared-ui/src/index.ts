@@ -13,4 +13,6 @@ export * from './lib/mutations/login-mutation';
 export * from './lib/mutations/logout-mutation';
 export * from './lib/utils/query-utils';
 export * from './lib/hooks/use-show-notification-if-application-needs-refresh';
-export * from './lib/components/logout/logout';
+export * from './lib/components/header-icon/header-icon';
+
+

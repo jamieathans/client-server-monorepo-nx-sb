@@ -1,9 +1,10 @@
 import { AppShell, Burger, Group, ScrollArea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { ColourSchemeToggle, Logout, NavLink } from '@org/shared-ui';
+import { ColourSchemeToggle, NavLink } from '@org/shared-ui';
 import classes from './root-layout.module.css';
 import { Outlet } from 'react-router';
 import { RoutePaths } from '../route-paths';
+import { Logout } from '../components/logout/logout';
 
 export function RootLayout() {
   const [opened, disclosure] = useDisclosure();
