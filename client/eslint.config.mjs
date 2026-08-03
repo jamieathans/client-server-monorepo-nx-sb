@@ -1,11 +1,13 @@
 import nx from '@nx/eslint-plugin';
 import pluginQuery from '@tanstack/eslint-plugin-query';
+import pluginReactYouMightNotNeedAnEffect from "eslint-plugin-react-you-might-not-need-an-effect";
 
 export default [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
   ...pluginQuery.configs['flat/recommended-strict'],
+  pluginReactYouMightNotNeedAnEffect.configs['strict'],
   {
     ignores: [
       '**/dist',
