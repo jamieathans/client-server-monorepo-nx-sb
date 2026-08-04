@@ -35,7 +35,7 @@ export abstract class BaseApi {
     return fetchInput;
   }
 
-  protected constructor(apiPrefix: string) {
+  protected constructor({ apiPrefix }: { apiPrefix: string }) {
     this.apiPrefix = apiPrefix;
   }
 

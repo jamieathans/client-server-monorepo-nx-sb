@@ -2,7 +2,7 @@ import { BaseApi, FetchRequestInit } from './base-api';
 
 export class AuthenticationApi extends BaseApi {
   constructor() {
-    super('/authentication');
+    super({ apiPrefix: '/authentication' });
   }
 
   async isAuthenticated({ fetchInit }: { fetchInit?: FetchRequestInit } = {}) {

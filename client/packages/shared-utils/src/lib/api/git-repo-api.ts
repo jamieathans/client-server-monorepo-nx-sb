@@ -3,7 +3,7 @@ import { GitRepoPropertiesDto } from '@org/shared-types';
 
 export class GitRepoApi extends BaseApi {
   constructor() {
-    super('/git-repo');
+    super({ apiPrefix: '/git-repo' });
   }
 
   async getProperties({ fetchInit }: { fetchInit?: FetchRequestInit } = {}) {

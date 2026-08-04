@@ -3,7 +3,7 @@ import { AuthenticatedUserDto } from '@org/shared-types';
 
 export class UsersApi extends BaseApi {
   constructor() {
-    super('/users');
+    super({ apiPrefix: '/users' });
   }
 
   async getMe({ fetchInit }: { fetchInit?: FetchRequestInit } = {}) {
