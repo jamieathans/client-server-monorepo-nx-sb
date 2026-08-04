@@ -1,6 +1,7 @@
 env:
   JAVA_VERSION: "25"
   NODE_VERSION: "24.x"
+  AZURE_WEBAPP_NAME: client-server-monorepo
 
 on:
   push:
@@ -40,3 +41,24 @@ jobs:
         with:
           name: java-app
           path: "${{ github.workspace }}/server/app/target/*.jar"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: "production"
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v5
+        with:
+          name: java-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: "*.jar"
