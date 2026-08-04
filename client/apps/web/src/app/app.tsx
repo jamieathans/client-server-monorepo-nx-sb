@@ -64,7 +64,8 @@ function Root() {
         onRequiresAuthentication();
       }
     },
-    [isAuthenticatedData],
+    // Note we have added "location.pathname" to the deps array to ensure isAuthenticatedData is verified on every route change.
+    [isAuthenticatedData, location.pathname],
   );
 
   // This will prevent the flicker of the RootLayout showing.
