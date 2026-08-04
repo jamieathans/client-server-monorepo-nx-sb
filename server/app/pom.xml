@@ -68,10 +68,10 @@
 						<goals>
 							<goal>revision</goal>
 						</goals>
-						<configuration>
+						<!-- <configuration>
 							<dotGitDirectory>${project.basedir}/../../.git</dotGitDirectory>
 							<commitIdGenerationMode>full</commitIdGenerationMode>
-						</configuration>
+						</configuration> -->
 					</execution>
 				</executions>
 			</plugin>
