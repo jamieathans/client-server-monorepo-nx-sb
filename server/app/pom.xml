@@ -70,6 +70,10 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<dotGitDirectory>${project.basedir}/../../.git</dotGitDirectory>
+					<commitIdGenerationMode>full</commitIdGenerationMode>
+				</configuration>
 			</plugin>
 
 			<plugin>
