@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @PropertySource("classpath:git.properties")
 public class GitRepoProperties {
 
-    @Value("${git.commit.id}")
+    @Value("${git.commit.id.abbrev}")
     private String commitId;
 
     public String getCommitId() {
