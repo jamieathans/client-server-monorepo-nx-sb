@@ -1,0 +1,39 @@
+env:
+  JAVA_VERSION: "25"
+  NODE_VERSION: "24.x"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Java version
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: "maven"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Execute custom build script
+        shell: bash
+        run: |
+          chmod +x ./build.sh
+          ./build.sh ci
+
+      - name: Upload jar artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/server/app/target/*.jar'
