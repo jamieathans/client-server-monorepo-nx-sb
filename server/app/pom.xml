@@ -70,6 +70,10 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<generateGitPropertiesFilename>
+						${project.build.outputDirectory}/git-repo.properties</generateGitPropertiesFilename>
+				</configuration>
 			</plugin>
 
 			<plugin>

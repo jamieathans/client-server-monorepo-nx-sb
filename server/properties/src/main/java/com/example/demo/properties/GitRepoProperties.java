@@ -5,7 +5,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("classpath:/git.properties")
+@PropertySource("classpath:/git-repo.properties")
 public class GitRepoProperties {
 
     @Value("${git.commit.id}")
