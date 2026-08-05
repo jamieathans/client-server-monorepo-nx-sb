@@ -21,7 +21,6 @@ public class GitRepoController extends BaseRestController {
 
     @GetMapping(PROPERTIES_PATH)
     public GitRepoPropertiesDto getProperties() {
-        //return new GitRepoPropertiesDto(gitRepoProperties.getCommitId());
-        return new GitRepoPropertiesDto("fake-commit-id");
+        return new GitRepoPropertiesDto(gitRepoProperties.getCommitId());
     }
 }
