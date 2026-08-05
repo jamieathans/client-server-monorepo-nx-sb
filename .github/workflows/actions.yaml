@@ -1,7 +1,7 @@
 env:
   JAVA_VERSION: 25
   NODE_VERSION: 24.x
-  AZURE_WEBAPP_NAME: client-server-monorepo-nx-sb
+  AZURE_WEBAPP_NAME: client-server-monorepo-linux
 
 on:
   push:
