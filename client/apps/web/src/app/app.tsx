@@ -45,26 +45,25 @@ function Root() {
     [location.pathname, navigate],
   );
 
-  const onRequiresAuthentication = useEffectEvent(() => {
-    // Don't redirect to login if already there.
-    if (!location.pathname.startsWith(`/${RoutePaths.Login}`)) {
-      const returnUrl = encodeURI(
-        `${location.pathname}${location.search}${location.hash}`,
-      );
+  const redirectToLoginRoute = useEffectEvent(() => {
+    const returnUrl = encodeURI(
+      `${location.pathname}${location.search}${location.hash}`,
+    );
 
-      navigate(`/${RoutePaths.Login}?${SearchParams.ReturnUrl}=${returnUrl}`, {
-        replace: true,
-      });
-    }
+    navigate(`/${RoutePaths.Login}?${SearchParams.ReturnUrl}=${returnUrl}`, {
+      replace: true,
+    });
   });
 
   useEffect(
     function redirectToLoginRouteIfNotAuthenticated() {
       if (isAuthenticatedData === false) {
-        onRequiresAuthentication();
+        // Don't redirect to login if already there.
+        if (!location.pathname.startsWith(`/${RoutePaths.Login}`)) {
+          redirectToLoginRoute();
+        }
       }
     },
-    // Note we have added "location.pathname" to the deps array to ensure isAuthenticatedData is verified on every route change.
     [isAuthenticatedData, location.pathname],
   );
 
