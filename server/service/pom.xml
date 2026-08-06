@@ -10,19 +10,9 @@
 		<version>${revision}</version>
 	</parent>
 
-	<artifactId>api</artifactId>
+	<artifactId>service</artifactId>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.example.demo</groupId>
-			<artifactId>properties</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>com.example.demo</groupId>
 			<artifactId>dto</artifactId>
@@ -30,8 +20,12 @@
 
 		<dependency>
 			<groupId>com.example.demo</groupId>
-			<artifactId>service</artifactId>
+			<artifactId>data</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.example.demo</groupId>
+			<artifactId>properties</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>
