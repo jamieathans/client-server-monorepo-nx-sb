@@ -5,13 +5,6 @@ export class AuthenticationApi extends BaseApi {
     super({ apiPrefix: '/authentication' });
   }
 
-  async isAuthenticated({ fetchInit }: { fetchInit?: FetchRequestInit } = {}) {
-    return super.get({
-      fetchInput: '/is-authenticated',
-      fetchInit,
-    });
-  }
-
   login({
     username,
     password,

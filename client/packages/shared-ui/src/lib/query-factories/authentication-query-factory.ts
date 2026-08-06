@@ -1,5 +1,5 @@
 import {
-  AuthenticationApi,
+  ActuatorApi,
   getStatusCodeFromApiError,
 } from '@org/shared-utils';
 import { queryOptions } from '@tanstack/react-query';
@@ -18,7 +18,7 @@ export class AuthenticationQueryFactory {
       ],
       queryFn: async ({ signal }) => {
         try {
-          await new AuthenticationApi().isAuthenticated({
+          await new ActuatorApi().health({
             fetchInit: {
               signal,
             },

@@ -26,17 +26,28 @@ export abstract class BaseApi {
   }
 
   private apiPrefix = '';
+  private prependSlashApi = true;
 
-  private appendApiPrefixToStringInput(fetchInput: FetchInput) {
+  private prependApiPrefixToStringInput(fetchInput: FetchInput) {
     if (typeof fetchInput === 'string') {
-      return `/api${this.apiPrefix}${fetchInput}`;
+      return `${this.prependSlashApi ? '/api' : ''}${this.apiPrefix}${fetchInput}`;
     }
 
     return fetchInput;
   }
 
-  protected constructor({ apiPrefix }: { apiPrefix: string }) {
+  protected constructor({
+    apiPrefix,
+    prependSlashApi,
+  }: {
+    apiPrefix: string;
+    prependSlashApi?: boolean;
+  }) {
     this.apiPrefix = apiPrefix;
+
+    if (prependSlashApi !== undefined) {
+      this.prependSlashApi = prependSlashApi;
+    }
   }
 
   protected async get({
@@ -45,7 +56,7 @@ export abstract class BaseApi {
     throwOnError = true,
   }: CommonOptions) {
     const response = await fetch(
-      this.appendApiPrefixToStringInput(fetchInput),
+      this.prependApiPrefixToStringInput(fetchInput),
       {
         method: 'GET',
         ...fetchInit,
@@ -68,7 +79,7 @@ export abstract class BaseApi {
     body?: unknown;
   }) {
     const response = await fetch(
-      this.appendApiPrefixToStringInput(fetchInput),
+      this.prependApiPrefixToStringInput(fetchInput),
       {
         method: 'POST',
         headers: {

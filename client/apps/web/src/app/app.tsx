@@ -31,9 +31,8 @@ function Root() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data: isAuthenticatedData } = useQuery(
-    AuthenticationQueryFactory.isAuthenticatedQueryOptions(),
-  );
+  const { data: isAuthenticatedData, refetch: refetchIsAuthenticated } =
+    useQuery(AuthenticationQueryFactory.isAuthenticatedQueryOptions());
 
   useEffect(
     function redirectToDefaultRoute() {
@@ -63,8 +62,10 @@ function Root() {
           redirectToLoginRoute();
         }
       }
+
+      refetchIsAuthenticated();
     },
-    [isAuthenticatedData, location.pathname],
+    [isAuthenticatedData, location.pathname, refetchIsAuthenticated],
   );
 
   // This will prevent the flicker of the RootLayout showing.
