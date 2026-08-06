@@ -20,6 +20,7 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: temurin
+          # disable caching if this does not speed up the build
           cache: maven
           cache-dependency-path: "${{ github.workspace }}/server/**/pom.xml"
 
@@ -27,6 +28,7 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
+          # disable caching if this does not speed up the build
           cache: npm
           cache-dependency-path: "${{ github.workspace }}/client/package-lock.json"
 
