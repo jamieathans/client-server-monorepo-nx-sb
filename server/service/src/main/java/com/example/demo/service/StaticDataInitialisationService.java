@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import java.util.HashSet;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +16,16 @@ import com.example.demo.data.repository.UserRepository;
 @Transactional
 public class StaticDataInitialisationService {
 
+    private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
 
-    public StaticDataInitialisationService(RoleRepository roleRepository, UserRepository userRepository) {
+    public StaticDataInitialisationService(
+            PasswordEncoder passwordEncoder,
+            RoleRepository roleRepository,
+            UserRepository userRepository) {
+
+        this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
     }
@@ -45,8 +51,8 @@ public class StaticDataInitialisationService {
             var adminEntity = new UserEntity();
 
             adminEntity.setUsername("admin");
-            var secureHash = new BCryptPasswordEncoder().encode("password");
-            adminEntity.setPassword(secureHash);
+            var encodedPassword = passwordEncoder.encode("password");
+            adminEntity.setPassword(encodedPassword);
 
             var roles = new HashSet<RoleEntity>();
 
