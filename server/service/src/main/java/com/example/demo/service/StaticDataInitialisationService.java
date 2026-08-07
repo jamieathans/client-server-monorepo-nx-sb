@@ -36,14 +36,14 @@ public class StaticDataInitialisationService {
         if (roleAdmin == null) {
             roleAdmin = new RoleEntity();
             roleAdmin.setName(Role.ADMIN);
-            roleRepository.save(roleAdmin);
+            roleAdmin = roleRepository.save(roleAdmin);
         }
 
         var roleUser = roleRepository.findByName(Role.USER);
         if (roleUser == null) {
             roleUser = new RoleEntity();
             roleUser.setName(Role.USER);
-            roleRepository.save(roleUser);
+            roleUser = roleRepository.save(roleUser);
         }
 
         var adminUser = userRepository.findByUsername("admin");
@@ -51,17 +51,11 @@ public class StaticDataInitialisationService {
             var adminEntity = new UserEntity();
 
             adminEntity.setUsername("admin");
-            var encodedPassword = passwordEncoder.encode("password");
-            adminEntity.setPassword(encodedPassword);
+            adminEntity.setPassword(passwordEncoder.encode("password"));
 
             var roles = new HashSet<RoleEntity>();
-
-            roleAdmin = roleRepository.findByName(Role.ADMIN);
             roles.add(roleAdmin);
-
-            roleUser = roleRepository.findByName(Role.USER);
             roles.add(roleUser);
-
             adminEntity.setRoles(roles);
 
             userRepository.save(adminEntity);
