@@ -32,6 +32,11 @@
 			<groupId>com.example.demo</groupId>
 			<artifactId>api</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.example.demo</groupId>
+			<artifactId>service</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
