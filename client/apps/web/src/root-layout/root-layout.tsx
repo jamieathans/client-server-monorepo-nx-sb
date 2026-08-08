@@ -1,13 +1,15 @@
-import { AppShell, Burger, Group, ScrollArea } from '@mantine/core';
+import { AppShell, Burger, Group, ScrollArea, Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { ColourSchemeToggle, NavLink } from '@org/shared-ui';
+import { ColourSchemeToggle, NavLink, UsersQueryFactory } from '@org/shared-ui';
 import classes from './root-layout.module.css';
 import { Outlet } from 'react-router';
 import { RoutePaths } from '../route-paths';
 import { Logout } from '../components/logout/logout';
+import { useQuery } from '@tanstack/react-query';
 
 export function RootLayout() {
   const [opened, disclosure] = useDisclosure();
+  const meQuery = useQuery(UsersQueryFactory.meQueryOptions());
 
   function handleNavLinkClick() {
     disclosure.close();
@@ -27,6 +29,7 @@ export function RootLayout() {
             size="sm"
           />
           <Group className={classes.headerRightAlignedGroup}>
+            <Button variant="transparent">{meQuery.data?.username}</Button>
             <ColourSchemeToggle />
             <Logout />
           </Group>

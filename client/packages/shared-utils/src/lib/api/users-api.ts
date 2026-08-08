@@ -1,5 +1,5 @@
 import { BaseApi, FetchRequestInit } from './base-api';
-import { AuthenticatedUserDto } from '@org/shared-types';
+import { UserDto } from '@org/shared-types';
 
 export class UsersApi extends BaseApi {
   constructor() {
@@ -12,6 +12,6 @@ export class UsersApi extends BaseApi {
       fetchInit,
     });
 
-    return (await response.json()) as AuthenticatedUserDto;
+    return (await response.json()) as UserDto;
   }
 }
