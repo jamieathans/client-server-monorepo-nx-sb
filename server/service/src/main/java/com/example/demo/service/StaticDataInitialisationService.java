@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import java.util.HashSet;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,19 +44,26 @@ public class StaticDataInitialisationService extends BaseService {
             roleUser = roleRepository.save(roleUser);
         }
 
-        var adminUser = userRepository.findByUsername("admin");
-        if (adminUser.isEmpty()) {
+        var adminUserOptional = userRepository.findByUsername("admin");
+        if (adminUserOptional.isEmpty()) {
             var adminEntity = new UserEntity();
 
             adminEntity.setUsername("admin");
             adminEntity.setPassword(passwordEncoder.encode("password"));
 
-            var roles = new HashSet<RoleEntity>();
-            roles.add(roleAdmin);
-            roles.add(roleUser);
-            adminEntity.setRoles(roles);
+            adminUserOptional = Optional.of(userRepository.save(adminEntity));
+        }
 
-            userRepository.save(adminEntity);
+        var adminUser = adminUserOptional.get();
+
+        var adminUserRoleAdmin = adminUser.getRoles().stream().filter(role -> role.getName() == Role.ADMIN).findFirst();
+        if (adminUserRoleAdmin.isEmpty()) {
+            adminUser.getRoles().add(roleAdmin);
+        }
+
+        var adminUserRoleUser = adminUser.getRoles().stream().filter(role -> role.getName() == Role.USER).findFirst();
+        if (adminUserRoleUser.isEmpty()) {
+            adminUser.getRoles().add(roleUser);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.demo.data.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ public class UserEntity {
 
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<RoleEntity> roles;
+    private Set<RoleEntity> roles = new HashSet<>();
 
     public String getUsername() {
         return username;

@@ -1,5 +1,6 @@
 package com.example.demo.data.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class RoleEntity {
     private Role name;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<UserEntity> users;
+    private Set<UserEntity> users = new HashSet<>();
 
     public Role getName() {
         return name;
