@@ -29,6 +29,10 @@ public class RoleEntity {
     @ManyToMany(mappedBy = "roles")
     private Set<UserEntity> users = new HashSet<>();
 
+    public UUID getId() {
+        return id;
+    }
+
     public Role getName() {
         return name;
     }
