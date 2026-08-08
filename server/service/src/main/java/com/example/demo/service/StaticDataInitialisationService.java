@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.data.entity.Role;
 import com.example.demo.data.entity.RoleEntity;
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.RoleRepository;
 import com.example.demo.data.repository.UserRepository;
+import com.example.demo.dto.Role;
 
 @Service
 public class StaticDataInitialisationService extends BaseService {
