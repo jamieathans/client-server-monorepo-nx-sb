@@ -6,7 +6,7 @@ import com.example.demo.dto.GitRepoPropertiesDto;
 import com.example.demo.properties.GitRepoProperties;
 
 @Service
-public class GitRepoService {
+public class GitRepoService extends BaseService {
     private final GitRepoProperties gitRepoProperties;
 
     public GitRepoService(GitRepoProperties gitRepoProperties) {

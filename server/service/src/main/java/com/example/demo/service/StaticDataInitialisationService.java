@@ -4,7 +4,6 @@ import java.util.HashSet;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.data.entity.Role;
 import com.example.demo.data.entity.RoleEntity;
@@ -13,8 +12,7 @@ import com.example.demo.data.repository.RoleRepository;
 import com.example.demo.data.repository.UserRepository;
 
 @Service
-@Transactional
-public class StaticDataInitialisationService {
+public class StaticDataInitialisationService extends BaseService {
 
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
