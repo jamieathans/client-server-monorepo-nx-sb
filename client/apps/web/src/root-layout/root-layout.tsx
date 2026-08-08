@@ -1,4 +1,4 @@
-import { AppShell, Burger, Group, ScrollArea, Button } from '@mantine/core';
+import { AppShell, Burger, Group, ScrollArea, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ColourSchemeToggle, NavLink, UsersQueryFactory } from '@org/shared-ui';
 import classes from './root-layout.module.css';
@@ -29,7 +29,7 @@ export function RootLayout() {
             size="sm"
           />
           <Group className={classes.headerRightAlignedGroup}>
-            <Button variant="transparent">{meQuery.data?.username}</Button>
+            <Title order={5}>{meQuery.data?.username}</Title>
             <ColourSchemeToggle />
             <Logout />
           </Group>
