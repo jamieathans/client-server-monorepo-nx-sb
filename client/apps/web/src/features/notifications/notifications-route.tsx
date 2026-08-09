@@ -15,6 +15,8 @@ function NotificationsRoute() {
   useEffect(
     function setTitleContext() {
       titleContext.setTitle(Titles.Notifications);
+
+      return () => titleContext.setTitle(null);
     },
     [titleContext],
   );

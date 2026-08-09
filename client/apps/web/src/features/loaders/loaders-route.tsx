@@ -8,6 +8,8 @@ function LoadersRoute() {
   useEffect(
     function setTitleContext() {
       titleContext.setTitle(Titles.Loaders);
+
+      return () => titleContext.setTitle(null);
     },
     [titleContext],
   );
