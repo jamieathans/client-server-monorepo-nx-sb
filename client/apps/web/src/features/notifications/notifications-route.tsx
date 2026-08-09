@@ -4,9 +4,21 @@ import {
   showInfoNotification,
   showSuccessNotification,
   showWarningNotification,
+  useTitleContext,
 } from '@org/shared-ui';
+import { useEffect } from 'react';
+import { Titles } from '../../titles';
 
 function NotificationsRoute() {
+  const titleContext = useTitleContext();
+
+  useEffect(
+    function setTitleContext() {
+      titleContext.setTitle(Titles.Notifications);
+    },
+    [titleContext],
+  );
+
   return (
     <Group>
       <Button

@@ -1,15 +1,22 @@
 import { AppShell, Burger, Group, ScrollArea, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { ColourSchemeToggle, NavLink, UsersQueryFactory } from '@org/shared-ui';
+import {
+  ColourSchemeToggle,
+  NavLink,
+  UsersQueryFactory,
+  useTitleContext,
+} from '@org/shared-ui';
 import classes from './root-layout.module.css';
 import { Outlet } from 'react-router';
 import { RoutePaths } from '../route-paths';
 import { Logout } from '../components/logout/logout';
 import { useQuery } from '@tanstack/react-query';
+import { Titles } from '../titles';
 
 export function RootLayout() {
   const [opened, disclosure] = useDisclosure();
   const meQuery = useQuery(UsersQueryFactory.meQueryOptions());
+  const titleContext = useTitleContext();
 
   function handleNavLinkClick() {
     disclosure.close();
@@ -42,12 +49,12 @@ export function RootLayout() {
           component={ScrollArea}
         >
           <NavLink
-            label="Notifications"
+            label={Titles.Notifications}
             to={`/${RoutePaths.Notifications}`}
             onClick={handleNavLinkClick}
           />
           <NavLink
-            label="Loaders"
+            label={Titles.Loaders}
             to={`/${RoutePaths.Loaders}`}
             onClick={handleNavLinkClick}
           />
@@ -60,6 +67,11 @@ export function RootLayout() {
             content: classes.mainScrollAreaContent,
           }}
         >
+          {titleContext.title && (
+            <Title className={classes.title} order={1}>
+              {titleContext.title}
+            </Title>
+          )}
           <Outlet />
         </ScrollArea>
       </AppShell.Main>

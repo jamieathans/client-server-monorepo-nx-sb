@@ -23,3 +23,7 @@
 .mainScrollAreaContent {
   height: 100%;
 }
+
+.title {
+  margin-bottom: var(--mantine-spacing-md);
+}
