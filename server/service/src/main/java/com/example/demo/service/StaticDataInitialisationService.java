@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -71,6 +72,8 @@ public class StaticDataInitialisationService extends BaseService {
     }
 
     private void initUsers() {
+        var userEntityList = new ArrayList<UserEntity>();
+
         for (int i = 1; i <= 500; i++) {
             var username = "user%s".formatted(i);
             var userOptional = userRepository.findByUsername(username);
@@ -87,9 +90,11 @@ public class StaticDataInitialisationService extends BaseService {
                 var roleUser = roleRepository.findByName(Role.USER);
                 userEntity.getRoles().add(roleUser);
 
-                userRepository.save(userEntity);
+                userEntityList.add(userEntity);
             }
         }
+
+        userRepository.saveAll(userEntityList);
     }
 
     public void initialise() {

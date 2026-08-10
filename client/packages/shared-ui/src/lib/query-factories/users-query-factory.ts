@@ -22,4 +22,20 @@ export class UsersQueryFactory {
       }),
     });
   }
+
+  static allUsersQueryOptions() {
+    return queryOptions({
+      queryKey: [...UsersQueryFactory.usersKey()],
+      queryFn: async ({ signal }) => {
+        return new UsersApi().getAllUsers({
+          fetchInit: {
+            signal,
+          },
+        });
+      },
+      meta: queryMeta({
+        errorMessage: 'There was an error retrieving all the users.',
+      }),
+    });
+  }
 }

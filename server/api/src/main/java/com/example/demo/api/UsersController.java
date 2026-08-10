@@ -29,7 +29,7 @@ public class UsersController extends BaseRestController {
         return userDto.get();
     }
 
-    @GetMapping(API_PREFIX_PATH + "/all")
+    @GetMapping(API_PREFIX_PATH)
     public List<UserDto> allUsers() {
         
         return usersService.getAllUsers();

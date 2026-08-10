@@ -14,4 +14,13 @@ export class UsersApi extends BaseApi {
 
     return (await response.json()) as UserDto;
   }
+
+  async getAllUsers({ fetchInit }: { fetchInit?: FetchRequestInit } = {}) {
+    const response = await super.get({
+      fetchInput: '',
+      fetchInit,
+    });
+
+    return (await response.json()) as UserDto[];
+  }
 }

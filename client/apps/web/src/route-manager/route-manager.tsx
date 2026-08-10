@@ -9,6 +9,7 @@ const NotificationsRoute = lazy(
 );
 const LoadersRoute = lazy(() => import('../features/loaders/loaders-route'));
 const LoginRoute = lazy(() => import('../features/login/login-route'));
+const UsersRoute = lazy(() => import('../features/users/users-route'));
 
 export function RouteManager() {
   return (
@@ -20,6 +21,9 @@ export function RouteManager() {
             element={<NotificationsRoute />}
           />
           <Route path={`${RoutePaths.Loaders}`} element={<LoadersRoute />} />
+          <Route path={`${RoutePaths.Users}`}>
+            <Route index element={<UsersRoute />} />
+          </Route>
         </Route>
         <Route path={`/${RoutePaths.Login}`} element={<LoginRoute />} />
         <Route path="*" element={<div>Not Found</div>} />

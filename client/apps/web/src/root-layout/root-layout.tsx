@@ -58,6 +58,11 @@ export function RootLayout() {
             to={`/${RoutePaths.Loaders}`}
             onClick={handleNavLinkClick}
           />
+          <NavLink
+            label={Titles.Users}
+            to={`/${RoutePaths.Users}`}
+            onClick={handleNavLinkClick}
+          />
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
