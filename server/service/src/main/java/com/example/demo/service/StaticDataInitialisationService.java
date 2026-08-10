@@ -50,6 +50,9 @@ public class StaticDataInitialisationService extends BaseService {
 
             adminEntity.setUsername("admin");
             adminEntity.setPassword(passwordEncoder.encode("password"));
+            adminEntity.setFirstName("Admin First Name");
+            adminEntity.setSurname("Admin Surname");
+            adminEntity.setEmail("admin@email.com");
 
             adminUserOptional = Optional.of(userRepository.save(adminEntity));
         }
@@ -67,7 +70,30 @@ public class StaticDataInitialisationService extends BaseService {
         }
     }
 
+    private void initUsers() {
+        for (int i = 1; i <= 100; i++) {
+            var username = "user%s".formatted(i);
+            var userOptional = userRepository.findByUsername(username);
+
+            if (userOptional.isEmpty()) {
+                var userEntity = new UserEntity();
+
+                userEntity.setUsername(username);
+                userEntity.setPassword(passwordEncoder.encode("password"));
+                userEntity.setFirstName("First Name %s".formatted(i));
+                userEntity.setSurname("Surname %s".formatted(i));
+                userEntity.setEmail("user%s@email.com".formatted(i));
+
+                var roleUser = roleRepository.findByName(Role.USER);
+                userEntity.getRoles().add(roleUser);
+
+                userRepository.save(userEntity);
+            }
+        }
+    }
+
     public void initialise() {
         initRolesAndAdminUser();
+        initUsers();
     }
 }
