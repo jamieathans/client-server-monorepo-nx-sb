@@ -3,4 +3,5 @@ export const RoutePaths = {
   Loaders: 'loaders',
   Login: 'login',
   Users: 'users',
+  Admin: 'admin',
 } as const;

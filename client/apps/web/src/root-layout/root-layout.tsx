@@ -5,6 +5,7 @@ import {
   NavLink,
   UsersQueryFactory,
   useTitleContext,
+  useUserHasRole,
 } from '@org/shared-ui';
 import classes from './root-layout.module.css';
 import { Outlet } from 'react-router';
@@ -17,6 +18,7 @@ export function RootLayout() {
   const [opened, disclosure] = useDisclosure();
   const meQuery = useQuery(UsersQueryFactory.meQueryOptions());
   const titleContext = useTitleContext();
+  const { userHasRole } = useUserHasRole();
 
   function handleNavLinkClick() {
     disclosure.close();
@@ -58,11 +60,19 @@ export function RootLayout() {
             to={`/${RoutePaths.Loaders}`}
             onClick={handleNavLinkClick}
           />
-          <NavLink
-            label={Titles.Users}
-            to={`/${RoutePaths.Users}`}
-            onClick={handleNavLinkClick}
-          />
+          {userHasRole('ADMIN') && (
+            <NavLink
+              label={Titles.Admin}
+              to={`/${RoutePaths.Admin}`}
+              onClick={handleNavLinkClick}
+            >
+              <NavLink
+                label={Titles.Users}
+                to={`/${RoutePaths.Admin}/${RoutePaths.Users}`}
+                onClick={handleNavLinkClick}
+              />
+            </NavLink>
+          )}
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>

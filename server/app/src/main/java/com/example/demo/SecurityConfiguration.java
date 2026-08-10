@@ -32,6 +32,7 @@ public class SecurityConfiguration {
                         "/notifications/**",
                         "/loaders/**",
                         "/login/**",
+                        "/admin/**",
         };
 
         @Bean
