@@ -1,4 +1,12 @@
 package com.example.demo.dto;
 
-public record UserDto(String username, Role[] roles) {
+import java.util.List;
+
+public record UserDto(
+        String id,
+        List<Role> roles,
+        String username,
+        String firstName,
+        String surname,
+        String email) {
 }

@@ -71,7 +71,7 @@ public class StaticDataInitialisationService extends BaseService {
     }
 
     private void initUsers() {
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= 500; i++) {
             var username = "user%s".formatted(i);
             var userOptional = userRepository.findByUsername(username);
 
