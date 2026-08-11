@@ -50,7 +50,6 @@ function UsersRoute() {
   return (
     <Table.ScrollContainer
       minWidth={0}
-      maxHeight="50vh"
       scrollAreaProps={{ viewportRef: setScrollParent }}
     >
       <Table stickyHeader layout="fixed" highlightOnHover>
