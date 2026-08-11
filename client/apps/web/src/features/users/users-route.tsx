@@ -8,6 +8,7 @@ import { Titles } from '../../titles';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Table } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
+import classes from './users-route.module.css';
 
 const ROW_HEIGHT = 36;
 const NUMBER_OF_COLUMNS = 4;
@@ -38,6 +39,10 @@ function UsersRoute() {
 
   const virtualItems = virtualizer.getVirtualItems();
 
+  function handleTableRowClick(id: string) {
+    console.log('id', id);
+  }
+
   if (usersQuery.data === undefined) {
     return <CenteredLoader />;
   }
@@ -48,7 +53,7 @@ function UsersRoute() {
       maxHeight="50vh"
       scrollAreaProps={{ viewportRef: setScrollParent }}
     >
-      <Table stickyHeader layout="fixed">
+      <Table stickyHeader layout="fixed" highlightOnHover>
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Username</Table.Th>
@@ -76,7 +81,11 @@ function UsersRoute() {
           {virtualItems.map((virtualItem) => {
             const row = usersQuery.data[virtualItem.index];
             return (
-              <Table.Tr key={virtualItem.index}>
+              <Table.Tr
+                className={classes.tableRow}
+                key={virtualItem.index}
+                onClick={() => handleTableRowClick(row.id)}
+              >
                 <Table.Td>{row.username}</Table.Td>
                 <Table.Td>{row.firstName}</Table.Td>
                 <Table.Td>{row.surname}</Table.Td>
