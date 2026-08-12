@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -33,21 +34,32 @@ public class UsersService extends BaseService {
         return userDto;
     }
 
-    public Optional<UserDto> getUserByUsername(String username) {
-        var userEntity = userRepository.findByUsername(username);
+    private static Optional<UserDto> mapOptional(Optional<UserEntity> optionalUserEntity) {
 
-        if (userEntity.isEmpty()) {
+        if (optionalUserEntity.isEmpty()) {
             return Optional.empty();
         }
 
-        var userDto = map(userEntity.get());
+        var userDto = map(optionalUserEntity.get());
 
         return Optional.of(userDto);
+    }
+
+    public Optional<UserDto> getUserByUsername(String username) {
+        var userEntity = userRepository.findByUsername(username);
+
+        return mapOptional(userEntity);
     }
 
     public List<UserDto> getAllUsers() {
         var allUsers = userRepository.findAll();
 
         return allUsers.stream().map(UsersService::map).toList();
+    }
+
+    public Optional<UserDto> getUserById(UUID id) {
+        var userEntity = userRepository.findById(id);
+
+        return mapOptional(userEntity);
     }
 }

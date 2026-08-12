@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                         "/loaders/**",
                         "/login/**",
                         "/admin/**",
+                        "/users/**",
         };
 
         @Bean
