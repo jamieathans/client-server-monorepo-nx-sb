@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import classes from './users-route.module.css';
 
 const ROW_HEIGHT = 36;
-const NUMBER_OF_COLUMNS = 4;
+const NUMBER_OF_COLUMNS = 5;
 
 function UsersRoute() {
   const titleContext = useTitleContext();
@@ -59,6 +59,7 @@ function UsersRoute() {
             <Table.Th>First Name</Table.Th>
             <Table.Th>Surname</Table.Th>
             <Table.Th>Email</Table.Th>
+            <Table.Th>Roles</Table.Th>
           </Table.Tr>
         </Table.Thead>
 
@@ -89,6 +90,7 @@ function UsersRoute() {
                 <Table.Td>{row.firstName}</Table.Td>
                 <Table.Td>{row.surname}</Table.Td>
                 <Table.Td>{row.email}</Table.Td>
+                <Table.Td>{row.roles.join(", ")}</Table.Td>
               </Table.Tr>
             );
           })}
