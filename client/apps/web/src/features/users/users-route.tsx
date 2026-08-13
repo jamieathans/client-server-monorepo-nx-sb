@@ -9,12 +9,15 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { Table } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import classes from './users-route.module.css';
+import { useNavigate } from 'react-router';
+import { RoutePaths } from '../../route-paths';
 
 const ROW_HEIGHT = 36;
 const NUMBER_OF_COLUMNS = 5;
 
 function UsersRoute() {
   const titleContext = useTitleContext();
+  const navigate = useNavigate();
 
   useEffect(
     function setTitleContext() {
@@ -40,7 +43,8 @@ function UsersRoute() {
   const virtualItems = virtualizer.getVirtualItems();
 
   function handleTableRowClick(id: string) {
-    console.log('id', id);
+    //console.log('id', id);
+    navigate(`/${RoutePaths.Users}/${id}`);
   }
 
   if (usersQuery.data === undefined) {
@@ -90,7 +94,7 @@ function UsersRoute() {
                 <Table.Td>{row.firstName}</Table.Td>
                 <Table.Td>{row.surname}</Table.Td>
                 <Table.Td>{row.email}</Table.Td>
-                <Table.Td>{row.roles.join(", ")}</Table.Td>
+                <Table.Td>{row.roles.join(', ')}</Table.Td>
               </Table.Tr>
             );
           })}

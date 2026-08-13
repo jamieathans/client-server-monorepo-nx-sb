@@ -1,11 +1,8 @@
-import {
-  ActuatorApi,
-  getStatusCodeFromApiError,
-} from '@org/shared-utils';
+import { ActuatorApi, getStatusCodeFromApiError } from '@org/shared-utils';
 import { queryOptions } from '@tanstack/react-query';
 import { queryMeta } from '../utils/query-utils';
 
-export class AuthenticationQueryFactory {
+export abstract class AuthenticationQueryFactory {
   static authenticationKey() {
     return ['authentication'] as const;
   }

@@ -1,4 +1,11 @@
-import { AppShell, Burger, Group, ScrollArea, Title } from '@mantine/core';
+import {
+  AppShell,
+  Burger,
+  Button,
+  Group,
+  ScrollArea,
+  Title,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
   ColourSchemeToggle,
@@ -8,7 +15,7 @@ import {
   useUserHasRole,
 } from '@org/shared-ui';
 import classes from './root-layout.module.css';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 import { RoutePaths } from '../route-paths';
 import { Logout } from '../components/logout/logout';
 import { useQuery } from '@tanstack/react-query';
@@ -19,9 +26,14 @@ export function RootLayout() {
   const meQuery = useQuery(UsersQueryFactory.meQueryOptions());
   const titleContext = useTitleContext();
   const { userHasRole } = useUserHasRole();
+  const navigate = useNavigate();
 
   function handleNavLinkClick() {
     disclosure.close();
+  }
+
+  function handleUsernameButtonClick() {
+    navigate(`/${RoutePaths.Users}/${meQuery.data?.id}`);
   }
 
   return (
@@ -38,7 +50,15 @@ export function RootLayout() {
             size="sm"
           />
           <Group className={classes.headerRightAlignedGroup}>
-            <Title order={5}>{meQuery.data?.username}</Title>
+            {meQuery.data && (
+              <Button
+                variant="transparent"
+                size="lg"
+                onClick={handleUsernameButtonClick}
+              >
+                {meQuery.data?.username}
+              </Button>
+            )}
             <ColourSchemeToggle />
             <Logout />
           </Group>

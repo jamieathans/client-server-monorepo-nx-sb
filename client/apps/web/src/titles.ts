@@ -3,4 +3,5 @@ export const Titles = {
   Loaders: 'Loaders',
   Users: 'Users',
   Admin: 'Admin',
+  User: 'User'
 } as const;

@@ -23,4 +23,19 @@ export class UsersApi extends BaseApi {
 
     return (await response.json()) as UserDto[];
   }
+
+  async getUserById({
+    id,
+    fetchInit,
+  }: {
+    id: string;
+    fetchInit?: FetchRequestInit;
+  }) {
+    const response = await super.get({
+      fetchInput: `/${id}`,
+      fetchInit,
+    });
+
+    return (await response.json()) as UserDto;
+  }
 }
