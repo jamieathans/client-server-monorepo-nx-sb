@@ -95,7 +95,9 @@ function LoginRoute() {
             {loginMutation.data === false && (
               <Text className={classes.loginFailedText}>login failed</Text>
             )}
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={loginMutation.isPending}>
+              Submit
+            </Button>
           </Group>
         </Stack>
       </form>

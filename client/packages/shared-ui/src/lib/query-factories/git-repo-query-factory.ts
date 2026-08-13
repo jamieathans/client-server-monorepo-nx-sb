@@ -2,10 +2,11 @@ import { GitRepoApi } from '@org/shared-utils';
 import { queryOptions } from '@tanstack/react-query';
 import { queryMeta } from '../utils/query-utils';
 
-export class GitRepoQueryFactory {
+export abstract class GitRepoQueryFactory {
   static gitRepoKey() {
     return ['git-repo'] as const;
   }
+
   static propertiesQueryOptions() {
     return queryOptions({
       queryKey: [...GitRepoQueryFactory.gitRepoKey(), 'properties'],

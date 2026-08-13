@@ -20,12 +20,12 @@
 
 		<dependency>
 			<groupId>com.example.demo</groupId>
-			<artifactId>properties</artifactId>
+			<artifactId>dto</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>com.example.demo</groupId>
-			<artifactId>dto</artifactId>
+			<artifactId>service</artifactId>
 		</dependency>
 	</dependencies>
 

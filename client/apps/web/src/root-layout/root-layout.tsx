@@ -1,16 +1,39 @@
-import { AppShell, Burger, Group, ScrollArea } from '@mantine/core';
+import {
+  AppShell,
+  Burger,
+  Button,
+  Group,
+  ScrollArea,
+  Title,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { ColourSchemeToggle, NavLink } from '@org/shared-ui';
+import {
+  ColourSchemeToggle,
+  NavLink,
+  UsersQueryFactory,
+  useTitleContext,
+  useUserHasRole,
+} from '@org/shared-ui';
 import classes from './root-layout.module.css';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 import { RoutePaths } from '../route-paths';
 import { Logout } from '../components/logout/logout';
+import { useQuery } from '@tanstack/react-query';
+import { Titles } from '../titles';
 
 export function RootLayout() {
   const [opened, disclosure] = useDisclosure();
+  const meQuery = useQuery(UsersQueryFactory.meQueryOptions());
+  const titleContext = useTitleContext();
+  const { userHasRole } = useUserHasRole();
+  const navigate = useNavigate();
 
   function handleNavLinkClick() {
     disclosure.close();
+  }
+
+  function handleUsernameButtonClick() {
+    navigate(`/${RoutePaths.Users}/${meQuery.data?.id}`);
   }
 
   return (
@@ -27,6 +50,15 @@ export function RootLayout() {
             size="sm"
           />
           <Group className={classes.headerRightAlignedGroup}>
+            {meQuery.data && (
+              <Button
+                variant="transparent"
+                size="lg"
+                onClick={handleUsernameButtonClick}
+              >
+                {meQuery.data?.username}
+              </Button>
+            )}
             <ColourSchemeToggle />
             <Logout />
           </Group>
@@ -39,15 +71,28 @@ export function RootLayout() {
           component={ScrollArea}
         >
           <NavLink
-            label="Notifications"
+            label={Titles.Notifications}
             to={`/${RoutePaths.Notifications}`}
             onClick={handleNavLinkClick}
           />
           <NavLink
-            label="Loaders"
+            label={Titles.Loaders}
             to={`/${RoutePaths.Loaders}`}
             onClick={handleNavLinkClick}
           />
+          {userHasRole('ADMIN') && (
+            <NavLink
+              label={Titles.Admin}
+              to={`/${RoutePaths.Admin}`}
+              onClick={handleNavLinkClick}
+            >
+              <NavLink
+                label={Titles.Users}
+                to={`/${RoutePaths.Admin}/${RoutePaths.Users}`}
+                onClick={handleNavLinkClick}
+              />
+            </NavLink>
+          )}
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
@@ -57,6 +102,11 @@ export function RootLayout() {
             content: classes.mainScrollAreaContent,
           }}
         >
+          {titleContext.title && (
+            <Title className={classes.title} order={1}>
+              {titleContext.title}
+            </Title>
+          )}
           <Outlet />
         </ScrollArea>
       </AppShell.Main>

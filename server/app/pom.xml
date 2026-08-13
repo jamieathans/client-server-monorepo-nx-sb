@@ -24,8 +24,23 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.example.demo</groupId>
 			<artifactId>api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.example.demo</groupId>
+			<artifactId>service</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -92,7 +107,8 @@
 							<classPatterns>
 								<pattern>com.example.demo.dto.**</pattern>
 							</classPatterns>
-							<outputFile>${project.build.directory}/dto.d.ts</outputFile>
+							<outputFile>${basedir}/../../client/packages/shared-types/src/lib/dto.ts</outputFile>
+							<outputFileType>implementationFile</outputFileType>
 						</configuration>
 					</execution>
 				</executions>

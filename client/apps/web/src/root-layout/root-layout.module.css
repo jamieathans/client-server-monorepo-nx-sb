@@ -22,4 +22,10 @@
 
 .mainScrollAreaContent {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin-bottom: var(--mantine-spacing-md);
 }

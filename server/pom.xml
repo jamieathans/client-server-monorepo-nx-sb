@@ -19,6 +19,8 @@
 	<modules>
 		<module>dto</module>
 		<module>properties</module>
+		<module>data</module>
+		<module>service</module>
 		<module>api</module>
 		<module>app</module>
 	</modules>
@@ -47,6 +49,20 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>com.microsoft.sqlserver</groupId>
+				<artifactId>mssql-jdbc</artifactId>
+				<version>13.4.0.jre11</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>42.7.13</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
 				<groupId>com.example.demo</groupId>
 				<artifactId>api</artifactId>
 				<version>${project.version}</version>
@@ -67,6 +83,18 @@
 			<dependency>
 				<groupId>com.example.demo</groupId>
 				<artifactId>dto</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.example.demo</groupId>
+				<artifactId>data</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.example.demo</groupId>
+				<artifactId>service</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

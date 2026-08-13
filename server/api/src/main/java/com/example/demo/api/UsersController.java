@@ -1,21 +1,51 @@
 package com.example.demo.api;
 
-import org.springframework.security.core.Authentication;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.AuthenticatedUserDto;
+import com.example.demo.dto.UserDto;
+import com.example.demo.service.UsersService;
 
 @RestController
 public class UsersController extends BaseRestController {
 
     private static final String API_PREFIX_PATH = "/users";
 
+    private final UsersService usersService;
+
+    public UsersController(UsersService usersService) {
+        this.usersService = usersService;
+    }
+
     @GetMapping(API_PREFIX_PATH + "/me")
-    public AuthenticatedUserDto me(Authentication authentication) {
+    public UserDto me(@AuthenticationPrincipal UserDetails userDetails) {
 
-        var user = new AuthenticatedUserDto(authentication.getName());
+        var userDto = usersService.getUserByUsername(userDetails.getUsername());
 
-        return user;
+        return userDto.get();
+    }
+
+    @GetMapping(API_PREFIX_PATH)
+    public List<UserDto> allUsers() {
+
+        return usersService.getAllUsers();
+    }
+
+    @GetMapping(API_PREFIX_PATH + "/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable UUID id) {
+        var userDto = usersService.getUserById(id);
+
+        if (userDto.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(userDto.get());
     }
 }

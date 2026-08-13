@@ -6,6 +6,7 @@ import {
   AuthenticationQueryFactory,
   FullScreenLoader,
   queryClient,
+  TitleContextProvider,
   useShowNotificationIfApplicationNeedsRefresh,
 } from '@org/shared-ui';
 import { useEffect, useEffectEvent } from 'react';
@@ -73,7 +74,11 @@ function Root() {
     return <FullScreenLoader />;
   }
 
-  return <RouteManager />;
+  return (
+    <TitleContextProvider>
+      <RouteManager />
+    </TitleContextProvider>
+  );
 }
 
 export function App() {
