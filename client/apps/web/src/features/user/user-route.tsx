@@ -29,6 +29,20 @@ function UserRoute() {
       firstName: isNotEmpty('First Name is required'),
       surname: isNotEmpty('Surname is required'),
       email: isEmail('Invalid email'),
+      password: (value) => {
+        if (value.length === 0) {
+          return null;
+        }
+
+        if (value.trim().length < 8) {
+          return 'Password must be at least 8 characters'
+        }
+
+        return null;
+      },
+      confirmPassword: (value, values) => {
+        return value !== values.password ? 'Passwords did not match' : null;
+      },
     },
   });
 
