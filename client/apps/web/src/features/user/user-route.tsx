@@ -82,7 +82,9 @@ function UserRoute() {
     surname: string;
     email: string;
     password: string;
-  }) {}
+  }) {
+    console.log(values);
+  }
 
   return (
     <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
