@@ -4,23 +4,21 @@ import { Outlet, useNavigate } from 'react-router';
 import { RoutePaths } from '../../route-paths';
 
 function AdminRoute() {
-  const { userHasRole } = useUserHasRole();
+  const { userIsAdmin } = useUserHasRole();
   const navigate = useNavigate();
-
-  const userIsAdmin = userHasRole('ADMIN');
 
   useEffect(
     function checkUserIsAdmin() {
-      if (userIsAdmin === undefined) {
+      if (userIsAdmin() === undefined) {
         return;
       }
 
-      navigate(userIsAdmin ? `${RoutePaths.Users}` : '/');
+      navigate(userIsAdmin() ? `${RoutePaths.Users}` : '/');
     },
     [navigate, userIsAdmin],
   );
 
-  if (userIsAdmin === undefined) {
+  if (userIsAdmin() === undefined) {
     return <CenteredLoader />;
   }
 

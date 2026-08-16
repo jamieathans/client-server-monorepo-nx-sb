@@ -25,7 +25,7 @@ export function RootLayout() {
   const [opened, disclosure] = useDisclosure();
   const meQuery = useQuery(UsersQueryFactory.meQueryOptions());
   const titleContext = useTitleContext();
-  const { userHasRole } = useUserHasRole();
+  const { userIsAdmin } = useUserHasRole();
   const navigate = useNavigate();
 
   function handleNavLinkClick() {
@@ -80,7 +80,7 @@ export function RootLayout() {
             to={`/${RoutePaths.Loaders}`}
             onClick={handleNavLinkClick}
           />
-          {userHasRole('ADMIN') && (
+          {userIsAdmin() && (
             <NavLink
               label={Titles.Admin}
               to={`/${RoutePaths.Admin}`}
