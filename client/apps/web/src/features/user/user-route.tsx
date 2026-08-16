@@ -29,10 +29,24 @@ function UserRoute() {
       firstName: isNotEmpty('First Name is required'),
       surname: isNotEmpty('Surname is required'),
       email: isEmail('Invalid email'),
+      password: (value) => {
+        if (value.length === 0) {
+          return null;
+        }
+
+        if (value.trim().length < 8) {
+          return 'Password must be at least 8 characters';
+        }
+
+        return null;
+      },
+      confirmPassword: (value, values) => {
+        return value !== values.password ? 'Passwords did not match' : null;
+      },
     },
   });
 
-  const onQueryData = useEffectEvent((data: UserDto) => {
+  const onQueryDataChange = useEffectEvent((data: UserDto) => {
     const formValues = {
       username: data.username,
       firstName: data.firstName,
@@ -49,7 +63,7 @@ function UserRoute() {
   useEffect(
     function initialiseFormFromQueryData() {
       if (userQuery.data) {
-        onQueryData(userQuery.data);
+        onQueryDataChange(userQuery.data);
       }
     },
     [userQuery.data],
@@ -68,7 +82,9 @@ function UserRoute() {
     surname: string;
     email: string;
     password: string;
-  }) {}
+  }) {
+    console.log(values);
+  }
 
   return (
     <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>

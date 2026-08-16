@@ -28,11 +28,11 @@ export function RouteManager() {
               <Route index element={<UsersRoute />} />
             </Route>
           </Route>
-          <Route path={`/${RoutePaths.Users}`}>
+          <Route path={`${RoutePaths.Users}`}>
             <Route path=":userId" element={<UserRoute />} />
           </Route>
         </Route>
-        <Route path={`/${RoutePaths.Login}`} element={<LoginRoute />} />
+        <Route path={`${RoutePaths.Login}`} element={<LoginRoute />} />
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </Suspense>

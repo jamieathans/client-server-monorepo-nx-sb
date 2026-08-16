@@ -15,5 +15,7 @@ export function useUserHasRole() {
     return !!hasRole;
   }
 
-  return { userHasRole } as const;
+  const userIsAdmin = userHasRole('ADMIN');
+
+  return { userHasRole, userIsAdmin } as const;
 }

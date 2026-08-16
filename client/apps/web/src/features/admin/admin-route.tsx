@@ -4,10 +4,8 @@ import { Outlet, useNavigate } from 'react-router';
 import { RoutePaths } from '../../route-paths';
 
 function AdminRoute() {
-  const { userHasRole } = useUserHasRole();
+  const { userIsAdmin } = useUserHasRole();
   const navigate = useNavigate();
-
-  const userIsAdmin = userHasRole('ADMIN');
 
   useEffect(
     function checkUserIsAdmin() {
