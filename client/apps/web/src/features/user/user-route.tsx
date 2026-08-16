@@ -35,7 +35,7 @@ function UserRoute() {
         }
 
         if (value.trim().length < 8) {
-          return 'Password must be at least 8 characters'
+          return 'Password must be at least 8 characters';
         }
 
         return null;
@@ -46,7 +46,7 @@ function UserRoute() {
     },
   });
 
-  const onQueryData = useEffectEvent((data: UserDto) => {
+  const onQueryDataChange = useEffectEvent((data: UserDto) => {
     const formValues = {
       username: data.username,
       firstName: data.firstName,
@@ -63,7 +63,7 @@ function UserRoute() {
   useEffect(
     function initialiseFormFromQueryData() {
       if (userQuery.data) {
-        onQueryData(userQuery.data);
+        onQueryDataChange(userQuery.data);
       }
     },
     [userQuery.data],
