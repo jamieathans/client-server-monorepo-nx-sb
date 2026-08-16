@@ -56,7 +56,7 @@ export function RootLayout() {
                 size="lg"
                 onClick={handleUsernameButtonClick}
               >
-                {meQuery.data?.username}
+                {meQuery.data.username}
               </Button>
             )}
             <ColourSchemeToggle />
