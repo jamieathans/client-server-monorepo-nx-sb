@@ -9,16 +9,16 @@ function AdminRoute() {
 
   useEffect(
     function checkUserIsAdmin() {
-      if (userIsAdmin() === undefined) {
+      if (userIsAdmin === undefined) {
         return;
       }
 
-      navigate(userIsAdmin() ? `${RoutePaths.Users}` : '/');
+      navigate(userIsAdmin ? `${RoutePaths.Users}` : '/');
     },
     [navigate, userIsAdmin],
   );
 
-  if (userIsAdmin() === undefined) {
+  if (userIsAdmin === undefined) {
     return <CenteredLoader />;
   }
 

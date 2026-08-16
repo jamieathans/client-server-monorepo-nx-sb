@@ -80,7 +80,7 @@ export function RootLayout() {
             to={`/${RoutePaths.Loaders}`}
             onClick={handleNavLinkClick}
           />
-          {userIsAdmin() && (
+          {userIsAdmin && (
             <NavLink
               label={Titles.Admin}
               to={`/${RoutePaths.Admin}`}
