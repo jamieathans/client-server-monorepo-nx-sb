@@ -62,4 +62,18 @@ public class UsersService extends BaseService {
 
         return mapOptional(userEntity);
     }
+
+    public boolean checkUsernameAvailability(UUID userId, String username) {
+        var userIdEntity = userRepository.findById(userId).get();
+
+        if (userIdEntity.getUsername().contentEquals(username)) {
+            // The username is the currently set one for the user.
+            return true;
+        }
+
+        var usernameEntityOptional = userRepository.findByUsername(username);
+
+        // User not found for this username, so it is available.
+        return usernameEntityOptional.isEmpty();
+    }
 }

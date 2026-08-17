@@ -1,4 +1,11 @@
-import { Button, Group, PasswordInput, Stack, TextInput } from '@mantine/core';
+import {
+  Button,
+  Group,
+  Loader,
+  PasswordInput,
+  Stack,
+  TextInput,
+} from '@mantine/core';
 import { isEmail, isNotEmpty, useForm } from '@mantine/form';
 import { UserDto } from '@org/shared-types';
 import { UsersQueryFactory, useTitleContext } from '@org/shared-ui';
@@ -6,12 +13,16 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useEffectEvent } from 'react';
 import { useParams } from 'react-router';
 import classes from './user-route.module.css';
+import { UsersApi } from '@org/shared-utils';
 
 function UserRoute() {
   const titleContext = useTitleContext();
   const params = useParams();
+
+  const userId = params.userId ?? '';
+
   const userQuery = useQuery(
-    UsersQueryFactory.getUserByIdQueryOptions({ id: params.userId ?? '' }),
+    UsersQueryFactory.getUserByIdQueryOptions({ id: userId }),
   );
 
   const form = useForm({
@@ -24,8 +35,26 @@ function UserRoute() {
       password: '',
       confirmPassword: '',
     },
+    // Debounce async validation by 500ms – prevents firing an API call on every keystroke.
+    validateDebounce: 500,
+    validateInputOnChange: ['username'],
     validate: {
-      username: isNotEmpty('Username is required'),
+      username: async (value, _values, _path, signal) => {
+        if (value.trim().length < 3) {
+          return 'Username must be at least 3 characters';
+        }
+
+        const usernameIsAvailable =
+          await new UsersApi().checkUsernameAvailability({
+            userId,
+            username: value,
+            fetchInit: {
+              signal,
+            },
+          });
+
+        return usernameIsAvailable ? null : 'Username is already taken';
+      },
       firstName: isNotEmpty('First Name is required'),
       surname: isNotEmpty('Surname is required'),
       email: isEmail('Invalid email'),
@@ -95,6 +124,10 @@ function UserRoute() {
           label="Username"
           placeholder="Username"
           withAsterisk
+          disabled={form.submitting}
+          rightSection={
+            form.isValidating('username') ? <Loader size={16} /> : null
+          }
         />
         <TextInput
           {...form.getInputProps('firstName')}

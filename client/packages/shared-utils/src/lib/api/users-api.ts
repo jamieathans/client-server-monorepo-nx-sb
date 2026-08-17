@@ -38,4 +38,21 @@ export class UsersApi extends BaseApi {
 
     return (await response.json()) as UserDto;
   }
+
+  async checkUsernameAvailability({
+    userId,
+    username,
+    fetchInit,
+  }: {
+    userId: string;
+    username: string;
+    fetchInit?: FetchRequestInit;
+  }) {
+    const response = await super.get({
+      fetchInput: `/check-username-availability?userId=${userId}&username=${username}`,
+      fetchInit,
+    });
+
+    return (await response.json()) as boolean;
+  }
 }
