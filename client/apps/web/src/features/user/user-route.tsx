@@ -128,6 +128,9 @@ function UserRoute() {
           rightSection={
             form.isValidating('username') ? <Loader size={16} /> : null
           }
+          classNames={{
+            input: classes.usernameInput,
+          }}
         />
         <TextInput
           {...form.getInputProps('firstName')}
@@ -149,6 +152,9 @@ function UserRoute() {
           label="Email"
           placeholder="Email"
           withAsterisk
+          classNames={{
+            input: classes.emailInput,
+          }}
         />
         <PasswordInput
           {...form.getInputProps('password')}
