@@ -55,4 +55,18 @@ export class UsersApi extends BaseApi {
 
     return (await response.json()) as boolean;
   }
+
+  updateUser({
+    userDto,
+    fetchInit,
+  }: {
+    userDto: UserDto;
+    fetchInit?: FetchRequestInit;
+  }) {
+    return super.post({
+      fetchInput: '/update-user',
+      fetchInit,
+      body: userDto,
+    });
+  }
 }

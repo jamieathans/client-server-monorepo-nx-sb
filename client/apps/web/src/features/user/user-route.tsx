@@ -8,7 +8,12 @@ import {
 } from '@mantine/core';
 import { isEmail, isNotEmpty, useForm } from '@mantine/form';
 import { UserDto } from '@org/shared-types';
-import { UsersQueryFactory, useTitleContext } from '@org/shared-ui';
+import {
+  showSuccessNotification,
+  UsersQueryFactory,
+  useTitleContext,
+  useUpdateUserMutation,
+} from '@org/shared-ui';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useEffectEvent } from 'react';
 import { useParams } from 'react-router';
@@ -24,6 +29,8 @@ function UserRoute() {
   const userQuery = useQuery(
     UsersQueryFactory.getUserByIdQueryOptions({ id: userId }),
   );
+
+  const updateUserMutation = useUpdateUserMutation();
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -112,7 +119,25 @@ function UserRoute() {
     email: string;
     password: string;
   }) {
-    console.log(values);
+    updateUserMutation.mutate(
+      {
+        userDto: {
+          id: userId,
+          username: values.username,
+          firstName: values.firstName,
+          surname: values.surname,
+          email: values.email,
+          roles: [],
+          password: values.password || null,
+        },
+      },
+      {
+        onSuccess: () =>
+          showSuccessNotification({
+            message: 'User details updated.',
+          }),
+      },
+    );
   }
 
   return (
@@ -171,7 +196,9 @@ function UserRoute() {
           withAsterisk
         />
         <Group justify="center">
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={updateUserMutation.isPending}>
+            Submit
+          </Button>
         </Group>
       </Stack>
     </form>

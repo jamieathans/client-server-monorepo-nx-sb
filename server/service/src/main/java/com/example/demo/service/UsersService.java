@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.data.entity.UserEntity;
@@ -13,10 +14,12 @@ import com.example.demo.dto.UserDto;
 @Service
 public class UsersService extends BaseService {
 
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public UsersService(UserRepository userRepository) {
+    public UsersService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     private static UserDto map(UserEntity userEntity) {
@@ -46,24 +49,28 @@ public class UsersService extends BaseService {
     }
 
     public Optional<UserDto> getUserByUsername(String username) {
+
         var userEntity = userRepository.findByUsername(username);
 
         return mapOptional(userEntity);
     }
 
     public List<UserDto> getAllUsers() {
+
         var allUsers = userRepository.findAll();
 
         return allUsers.stream().map(UsersService::map).toList();
     }
 
     public Optional<UserDto> getUserById(UUID id) {
+
         var userEntity = userRepository.findById(id);
 
         return mapOptional(userEntity);
     }
 
     public boolean checkUsernameAvailability(UUID userId, String username) {
+
         var userIdEntity = userRepository.findById(userId).get();
 
         if (userIdEntity.getUsername().contentEquals(username)) {
@@ -75,5 +82,19 @@ public class UsersService extends BaseService {
 
         // User not found for this username, so it is available.
         return usernameEntityOptional.isEmpty();
+    }
+
+    public void updateUser(UserDto userDto) {
+
+        var userEntity = userRepository.findById(UUID.fromString(userDto.id())).get();
+
+        userEntity.setUsername(userDto.username());
+        userEntity.setFirstName(userDto.firstName());
+        userEntity.setSurname(userDto.surname());
+        userEntity.setEmail(userDto.email());
+
+        if (userDto.password() != null) {
+            userEntity.setPassword(passwordEncoder.encode(userDto.password()));
+        }
     }
 }
