@@ -1,5 +1,6 @@
 import {
   CenteredLoader,
+  useLoaderContext,
   UsersQueryFactory,
   useTitleContext,
 } from '@org/shared-ui';
@@ -18,6 +19,7 @@ const NUMBER_OF_COLUMNS = 5;
 function UsersRoute() {
   const titleContext = useTitleContext();
   const navigate = useNavigate();
+  const loaderContext = useLoaderContext();
 
   useEffect(
     function setTitleContext() {
@@ -29,6 +31,14 @@ function UsersRoute() {
   );
 
   const usersQuery = useQuery(UsersQueryFactory.allUsersQueryOptions());
+
+  useEffect(
+    function setLoaderContext() {
+      //console.log("setLoaderContext", usersQuery.isFetching);
+      loaderContext.setShowLoader(usersQuery.isFetching);
+    },
+    [loaderContext, usersQuery.isFetching],
+  );
 
   const [scrollParent, setScrollParent] = useState<HTMLDivElement | null>(null);
 

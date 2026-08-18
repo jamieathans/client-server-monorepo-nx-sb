@@ -3,6 +3,7 @@ import {
   Burger,
   Button,
   Group,
+  Loader,
   ScrollArea,
   Title,
 } from '@mantine/core';
@@ -10,6 +11,7 @@ import { useDisclosure } from '@mantine/hooks';
 import {
   ColourSchemeToggle,
   NavLink,
+  useLoaderContext,
   UsersQueryFactory,
   useTitleContext,
   useUserHasRole,
@@ -27,6 +29,7 @@ export function RootLayout() {
   const titleContext = useTitleContext();
   const { userIsAdmin } = useUserHasRole();
   const navigate = useNavigate();
+  const loaderContext = useLoaderContext();
 
   function handleNavLinkClick() {
     disclosure.close();
@@ -102,11 +105,14 @@ export function RootLayout() {
             content: classes.mainScrollAreaContent,
           }}
         >
-          {titleContext.title && (
-            <Title className={classes.title} order={1}>
-              {titleContext.title}
-            </Title>
-          )}
+          <Group align='center'>
+            {titleContext.title && (
+              <Title className={classes.title} order={1}>
+                {titleContext.title}
+              </Title>
+            )}
+            {loaderContext.showLoader && <Loader size="lg" />}
+          </Group>
           <Outlet />
         </ScrollArea>
       </AppShell.Main>
