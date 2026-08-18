@@ -127,8 +127,6 @@ public class UsersService extends BaseService {
             }
         }
 
-        for (var toRemove : rolesToRemove) {
-            userEntity.getRoles().remove(toRemove);
-        }
+        userEntity.getRoles().removeAll(rolesToRemove);
     }
 }
