@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -7,6 +8,7 @@ import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.data.entity.RoleEntity;
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.RoleRepository;
 import com.example.demo.data.repository.UserRepository;
@@ -114,14 +116,19 @@ public class UsersService extends BaseService {
             }
         }
 
+        var rolesToRemove = new HashSet<RoleEntity>();
+
         // Check for removed roles.
         for (var roleEntity : userEntity.getRoles()) {
             var userDtoRolesContainsEntityRole = userDto.roles().stream().anyMatch(r -> roleEntity.getName() == r);
 
-            // Remove the role.
             if (!userDtoRolesContainsEntityRole) {
-                userEntity.getRoles().remove(roleEntity);
+                rolesToRemove.add(roleEntity);
             }
+        }
+
+        for (var toRemove : rolesToRemove) {
+            userEntity.getRoles().remove(toRemove);
         }
     }
 }

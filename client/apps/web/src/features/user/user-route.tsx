@@ -86,6 +86,9 @@ function UserRoute() {
       confirmPassword: (value, values) => {
         return value !== values.password ? 'Passwords did not match' : null;
       },
+      roles: (value) => {
+        return value.length === 0 ? 'User must have at least 1 role' : null;
+      }
     },
   });
 
