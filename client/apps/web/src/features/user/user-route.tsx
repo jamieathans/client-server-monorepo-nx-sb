@@ -121,15 +121,13 @@ function UserRoute() {
   }) {
     updateUserMutation.mutate(
       {
-        userDto: {
-          id: userId,
-          username: values.username,
-          firstName: values.firstName,
-          surname: values.surname,
-          email: values.email,
-          roles: [],
-          password: values.password || null,
-        },
+        id: userId,
+        username: values.username,
+        firstName: values.firstName,
+        surname: values.surname,
+        email: values.email,
+        roles: [],
+        password: values.password || null,
       },
       {
         onSuccess: () =>

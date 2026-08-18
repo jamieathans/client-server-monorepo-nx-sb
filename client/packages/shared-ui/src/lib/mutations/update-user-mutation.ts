@@ -8,7 +8,7 @@ export function useUpdateUserMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ userDto }: { userDto: UserDto }) => {
+    mutationFn: (userDto: UserDto) => {
       return new UsersApi().updateUser({
         userDto,
       });
