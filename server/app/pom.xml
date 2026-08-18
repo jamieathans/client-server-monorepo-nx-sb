@@ -109,6 +109,7 @@
 							</classPatterns>
 							<outputFile>${basedir}/../../client/packages/shared-types/src/lib/dto.ts</outputFile>
 							<outputFileType>implementationFile</outputFileType>
+							<nullableAnnotations>org.jspecify.annotations.Nullable</nullableAnnotations>
 						</configuration>
 					</execution>
 				</executions>

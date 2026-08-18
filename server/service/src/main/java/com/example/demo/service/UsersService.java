@@ -1,22 +1,33 @@
 package com.example.demo.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.data.entity.RoleEntity;
 import com.example.demo.data.entity.UserEntity;
+import com.example.demo.data.repository.RoleRepository;
 import com.example.demo.data.repository.UserRepository;
 import com.example.demo.dto.UserDto;
 
 @Service
 public class UsersService extends BaseService {
 
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public UsersService(UserRepository userRepository) {
+    public UsersService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     private static UserDto map(UserEntity userEntity) {
@@ -46,20 +57,76 @@ public class UsersService extends BaseService {
     }
 
     public Optional<UserDto> getUserByUsername(String username) {
+
         var userEntity = userRepository.findByUsername(username);
 
         return mapOptional(userEntity);
     }
 
     public List<UserDto> getAllUsers() {
+
         var allUsers = userRepository.findAll();
 
         return allUsers.stream().map(UsersService::map).toList();
     }
 
     public Optional<UserDto> getUserById(UUID id) {
+
         var userEntity = userRepository.findById(id);
 
         return mapOptional(userEntity);
+    }
+
+    public boolean checkUsernameAvailability(UUID userId, String username) {
+
+        var userIdEntity = userRepository.findById(userId).get();
+
+        if (userIdEntity.getUsername().contentEquals(username)) {
+            // The username is the currently set one for the user.
+            return true;
+        }
+
+        var usernameEntityOptional = userRepository.findByUsername(username);
+
+        // User not found for this username, so it is available.
+        return usernameEntityOptional.isEmpty();
+    }
+
+    public void updateUser(UserDto userDto) {
+
+        var userEntity = userRepository.findById(UUID.fromString(userDto.id())).get();
+
+        userEntity.setUsername(userDto.username());
+        userEntity.setFirstName(userDto.firstName());
+        userEntity.setSurname(userDto.surname());
+        userEntity.setEmail(userDto.email());
+
+        if (userDto.password() != null) {
+            userEntity.setPassword(passwordEncoder.encode(userDto.password()));
+        }
+
+        // Check for added roles.
+        for (var role : userDto.roles()) {
+            var userHasRole = userEntity.getRoles().stream().anyMatch(r -> r.getName() == role);
+
+            if (!userHasRole) {
+                // Add the role.
+                var roleEntity = roleRepository.findByName(role);
+                userEntity.getRoles().add(roleEntity);
+            }
+        }
+
+        var rolesToRemove = new HashSet<RoleEntity>();
+
+        // Check for removed roles.
+        for (var roleEntity : userEntity.getRoles()) {
+            var userDtoRolesContainsEntityRole = userDto.roles().stream().anyMatch(r -> roleEntity.getName() == r);
+
+            if (!userDtoRolesContainsEntityRole) {
+                rolesToRemove.add(roleEntity);
+            }
+        }
+
+        userEntity.getRoles().removeAll(rolesToRemove);
     }
 }

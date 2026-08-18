@@ -55,4 +55,20 @@ export abstract class UsersQueryFactory {
       }),
     });
   }
+
+  static rolesQueryOptions() {
+    return queryOptions({
+      queryKey: [...UsersQueryFactory.usersKey(), 'roles'],
+      queryFn: ({ signal }) => {
+        return new UsersApi().getRoles({
+          fetchInit: {
+            signal,
+          },
+        });
+      },
+      meta: queryMeta({
+        errorMessage: 'There was an error retrieving the user roles.',
+      }),
+    });
+  }
 }

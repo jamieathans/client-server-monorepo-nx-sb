@@ -1,3 +1,8 @@
 .form {
   width: 33%;
 }
+
+.usernameInput,
+.emailInput {
+  text-transform: lowercase;
+}

@@ -8,10 +8,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.Role;
 import com.example.demo.dto.UserDto;
 import com.example.demo.service.UsersService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class UsersController extends BaseRestController {
@@ -40,6 +44,7 @@ public class UsersController extends BaseRestController {
 
     @GetMapping(API_PREFIX_PATH + "/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable UUID id) {
+
         var userDto = usersService.getUserById(id);
 
         if (userDto.isEmpty()) {
@@ -47,5 +52,23 @@ public class UsersController extends BaseRestController {
         }
 
         return ResponseEntity.ok(userDto.get());
+    }
+
+    @GetMapping(API_PREFIX_PATH + "/check-username-availability")
+    public boolean checkUsernameAvailability(@RequestParam UUID userId, @RequestParam String username) {
+
+        return usersService.checkUsernameAvailability(userId, username);
+    }
+
+    @PostMapping(API_PREFIX_PATH + "/update-user")
+    public void updateUser(@RequestBody UserDto userDto) {
+
+        usersService.updateUser(userDto);
+    }
+
+    @GetMapping(API_PREFIX_PATH + "/roles")
+    public Role[] roles() {
+        
+        return Role.values();
     }
 }
