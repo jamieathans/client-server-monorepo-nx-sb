@@ -2,17 +2,19 @@ import {
   Button,
   Group,
   Loader,
+  MultiSelect,
   PasswordInput,
   Stack,
   TextInput,
 } from '@mantine/core';
 import { isEmail, isNotEmpty, useForm } from '@mantine/form';
-import { UserDto } from '@org/shared-types';
+import { Role, UserDto } from '@org/shared-types';
 import {
   showSuccessNotification,
   UsersQueryFactory,
   useTitleContext,
   useUpdateUserMutation,
+  useUserHasRole,
 } from '@org/shared-ui';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useEffectEvent } from 'react';
@@ -30,6 +32,10 @@ function UserRoute() {
     UsersQueryFactory.getUserByIdQueryOptions({ id: userId }),
   );
 
+  const rolesQuery = useQuery(UsersQueryFactory.rolesQueryOptions());
+
+  const { userIsAdmin } = useUserHasRole();
+
   const updateUserMutation = useUpdateUserMutation();
 
   const form = useForm({
@@ -41,6 +47,7 @@ function UserRoute() {
       email: '',
       password: '',
       confirmPassword: '',
+      roles: [] as Role[],
     },
     // Debounce async validation by 500ms – prevents firing an API call on every keystroke.
     validateDebounce: 500,
@@ -90,6 +97,7 @@ function UserRoute() {
       email: data.email,
       password: '',
       confirmPassword: '',
+      roles: data.roles,
     };
 
     form.setInitialValues(formValues);
@@ -112,13 +120,7 @@ function UserRoute() {
     [titleContext],
   );
 
-  function handleSubmit(values: {
-    username: string;
-    firstName: string;
-    surname: string;
-    email: string;
-    password: string;
-  }) {
+  function handleSubmit(values: Omit<UserDto, 'id'>) {
     updateUserMutation.mutate(
       {
         id: userId,
@@ -126,7 +128,7 @@ function UserRoute() {
         firstName: values.firstName,
         surname: values.surname,
         email: values.email,
-        roles: [],
+        roles: values.roles,
         password: values.password || null,
       },
       {
@@ -193,6 +195,15 @@ function UserRoute() {
           placeholder="Confirm Password"
           withAsterisk
         />
+        {userIsAdmin && (
+          <MultiSelect
+            label="Pick Roles"
+            placeholder="Pick Roles"
+            data={rolesQuery.data}
+            key={form.key('roles')}
+            {...form.getInputProps('roles')}
+          />
+        )}
         <Group justify="center">
           <Button type="submit" disabled={updateUserMutation.isPending}>
             Submit

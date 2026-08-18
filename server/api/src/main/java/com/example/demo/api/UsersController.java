@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.Role;
 import com.example.demo.dto.UserDto;
 import com.example.demo.service.UsersService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +44,7 @@ public class UsersController extends BaseRestController {
 
     @GetMapping(API_PREFIX_PATH + "/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable UUID id) {
-        
+
         var userDto = usersService.getUserById(id);
 
         if (userDto.isEmpty()) {
@@ -63,5 +64,11 @@ public class UsersController extends BaseRestController {
     public void updateUser(@RequestBody UserDto userDto) {
 
         usersService.updateUser(userDto);
+    }
+
+    @GetMapping(API_PREFIX_PATH + "/roles")
+    public Role[] roles() {
+        
+        return Role.values();
     }
 }

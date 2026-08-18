@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.data.entity.UserEntity;
+import com.example.demo.data.repository.RoleRepository;
 import com.example.demo.data.repository.UserRepository;
 import com.example.demo.dto.UserDto;
 
@@ -16,10 +17,15 @@ public class UsersService extends BaseService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public UsersService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UsersService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     private static UserDto map(UserEntity userEntity) {
@@ -95,6 +101,27 @@ public class UsersService extends BaseService {
 
         if (userDto.password() != null) {
             userEntity.setPassword(passwordEncoder.encode(userDto.password()));
+        }
+
+        // Check for added roles.
+        for (var role : userDto.roles()) {
+            var userHasRole = userEntity.getRoles().stream().anyMatch(r -> r.getName() == role);
+
+            if (!userHasRole) {
+                // Add the role.
+                var roleEntity = roleRepository.findByName(role);
+                userEntity.getRoles().add(roleEntity);
+            }
+        }
+
+        // Check for removed roles.
+        for (var roleEntity : userEntity.getRoles()) {
+            var userDtoRolesContainsEntityRole = userDto.roles().stream().anyMatch(r -> roleEntity.getName() == r);
+
+            // Remove the role.
+            if (!userDtoRolesContainsEntityRole) {
+                userEntity.getRoles().remove(roleEntity);
+            }
         }
     }
 }

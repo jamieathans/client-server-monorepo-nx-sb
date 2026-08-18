@@ -1,5 +1,5 @@
 import { BaseApi, FetchRequestInit } from './base-api';
-import { UserDto } from '@org/shared-types';
+import { Role, UserDto } from '@org/shared-types';
 
 export class UsersApi extends BaseApi {
   constructor() {
@@ -68,5 +68,14 @@ export class UsersApi extends BaseApi {
       fetchInit,
       body: userDto,
     });
+  }
+
+  async getRoles({ fetchInit }: { fetchInit?: FetchRequestInit }) {
+    const response = await super.get({
+      fetchInput: '/roles',
+      fetchInit,
+    });
+
+    return (await response.json()) as Role[];
   }
 }
