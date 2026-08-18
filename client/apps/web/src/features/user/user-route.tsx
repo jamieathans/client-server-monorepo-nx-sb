@@ -124,7 +124,7 @@ function UserRoute() {
   );
 
   function handleSubmit(values: Omit<UserDto, 'id'>) {
-    updateUserMutation.mutate(
+    return updateUserMutation.mutateAsync(
       {
         id: userId,
         username: values.username,
@@ -208,7 +208,7 @@ function UserRoute() {
           />
         )}
         <Group justify="center">
-          <Button type="submit" disabled={updateUserMutation.isPending}>
+          <Button type="submit" disabled={form.submitting}>
             Submit
           </Button>
         </Group>

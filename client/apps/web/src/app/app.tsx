@@ -5,6 +5,7 @@ import { Notifications } from '@mantine/notifications';
 import {
   AuthenticationQueryFactory,
   FullScreenLoader,
+  LoaderContextProvider,
   queryClient,
   TitleContextProvider,
   useShowNotificationIfApplicationNeedsRefresh,
@@ -76,7 +77,9 @@ function Root() {
 
   return (
     <TitleContextProvider>
-      <RouteManager />
+      <LoaderContextProvider>
+        <RouteManager />
+      </LoaderContextProvider>
     </TitleContextProvider>
   );
 }
