@@ -65,7 +65,7 @@ public class UsersService extends BaseService {
 
     public List<UserDto> getAllUsers() {
 
-        var allUsers = userRepository.findAll();
+        var allUsers = userRepository.findAllByOrderByUsernameAsc();
 
         return allUsers.stream().map(UsersService::map).toList();
     }
