@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -8,7 +7,6 @@ import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.data.entity.RoleEntity;
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.RoleRepository;
 import com.example.demo.data.repository.UserRepository;
@@ -105,28 +103,11 @@ public class UsersService extends BaseService {
             userEntity.setPassword(passwordEncoder.encode(userDto.password()));
         }
 
-        // Check for added roles.
+        userEntity.getRoles().clear();
+
         for (var role : userDto.roles()) {
-            var userHasRole = userEntity.getRoles().stream().anyMatch(r -> r.getName() == role);
-
-            if (!userHasRole) {
-                // Add the role.
-                var roleEntity = roleRepository.findByName(role);
-                userEntity.getRoles().add(roleEntity);
-            }
+            var roleEntity = roleRepository.findByName(role);
+            userEntity.getRoles().add(roleEntity);
         }
-
-        var rolesToRemove = new HashSet<RoleEntity>();
-
-        // Check for removed roles.
-        for (var roleEntity : userEntity.getRoles()) {
-            var userDtoRolesContainsEntityRole = userDto.roles().stream().anyMatch(r -> roleEntity.getName() == r);
-
-            if (!userDtoRolesContainsEntityRole) {
-                rolesToRemove.add(roleEntity);
-            }
-        }
-
-        userEntity.getRoles().removeAll(rolesToRemove);
     }
 }
