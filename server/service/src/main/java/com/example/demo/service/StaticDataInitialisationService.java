@@ -60,15 +60,9 @@ public class StaticDataInitialisationService extends BaseService {
 
         var adminUser = adminUserOptional.get();
 
-        var adminUserRoleAdmin = adminUser.getRoles().stream().filter(role -> role.getName() == Role.ADMIN).findFirst();
-        if (adminUserRoleAdmin.isEmpty()) {
-            adminUser.getRoles().add(roleAdmin);
-        }
-
-        var adminUserRoleUser = adminUser.getRoles().stream().filter(role -> role.getName() == Role.USER).findFirst();
-        if (adminUserRoleUser.isEmpty()) {
-            adminUser.getRoles().add(roleUser);
-        }
+        adminUser.getRoles().clear();
+        adminUser.getRoles().add(roleAdmin);
+        adminUser.getRoles().add(roleUser);
     }
 
     private void initUsers() {

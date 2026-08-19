@@ -25,7 +25,7 @@ export abstract class UsersQueryFactory {
 
   static allUsersQueryOptions() {
     return queryOptions({
-      queryKey: [...UsersQueryFactory.usersKey()],
+      queryKey: [...UsersQueryFactory.usersKey(), 'all'],
       queryFn: ({ signal }) => {
         return new UsersApi().getAllUsers({
           fetchInit: {
