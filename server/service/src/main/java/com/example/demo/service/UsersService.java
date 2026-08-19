@@ -106,7 +106,9 @@ public class UsersService extends BaseService {
         userEntity.getRoles().clear();
 
         for (var role : userDto.roles()) {
+
             var roleEntity = roleRepository.findByName(role);
+            
             userEntity.getRoles().add(roleEntity);
         }
     }
