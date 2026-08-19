@@ -88,7 +88,7 @@ function UserRoute() {
       },
       roles: (value) => {
         return value.length === 0 ? 'User must have at least 1 role' : null;
-      }
+      },
     },
   });
 
@@ -143,6 +143,9 @@ function UserRoute() {
     );
   }
 
+  const submitButtonDisabled =
+    form.submitting || userQuery.isFetching || rolesQuery.isFetching;
+
   return (
     <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
@@ -154,7 +157,7 @@ function UserRoute() {
           withAsterisk
           disabled={form.submitting}
           rightSection={
-            form.isValidating('username') ? <Loader size={16} /> : null
+            form.isValidating('username') ? <Loader size="sm" /> : null
           }
           classNames={{
             input: classes.usernameInput,
@@ -208,7 +211,7 @@ function UserRoute() {
           />
         )}
         <Group justify="center">
-          <Button type="submit" disabled={form.submitting}>
+          <Button type="submit" disabled={submitButtonDisabled}>
             Submit
           </Button>
         </Group>
