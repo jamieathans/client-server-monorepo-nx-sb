@@ -18,3 +18,4 @@ export * from './lib/context/title-context';
 export * from './lib/hooks/use-user-has-role';
 export * from './lib/mutations/update-user-mutation';
 export * from './lib/context/loader-context';
+export * from './lib/query-factories/me-query-factory';

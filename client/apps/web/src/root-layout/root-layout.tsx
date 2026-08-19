@@ -10,9 +10,9 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import {
   ColourSchemeToggle,
+  MeQueryFactory,
   NavLink,
   useLoaderContext,
-  UsersQueryFactory,
   useTitleContext,
   useUserHasRole,
 } from '@org/shared-ui';
@@ -25,7 +25,7 @@ import { Titles } from '../titles';
 
 export function RootLayout() {
   const [opened, disclosure] = useDisclosure();
-  const meQuery = useQuery(UsersQueryFactory.meQueryOptions());
+  const meQuery = useQuery(MeQueryFactory.meQueryOptions());
   const titleContext = useTitleContext();
   const { userIsAdmin } = useUserHasRole();
   const navigate = useNavigate();
