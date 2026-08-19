@@ -7,22 +7,6 @@ export abstract class UsersQueryFactory {
     return ['users'] as const;
   }
 
-  static meQueryOptions() {
-    return queryOptions({
-      queryKey: [...UsersQueryFactory.usersKey(), 'me'],
-      queryFn: ({ signal }) => {
-        return new UsersApi().getMe({
-          fetchInit: {
-            signal,
-          },
-        });
-      },
-      meta: queryMeta({
-        errorMessage: 'There was an error retrieving your user information.',
-      }),
-    });
-  }
-
   static allUsersQueryOptions() {
     return queryOptions({
       queryKey: [...UsersQueryFactory.usersKey(), 'all'],
