@@ -34,8 +34,9 @@ function UsersRoute() {
 
   useEffect(
     function setLoaderContext() {
-      //console.log("setLoaderContext", usersQuery.isFetching);
       loaderContext.setShowLoader(usersQuery.isFetching);
+
+      return () => loaderContext.setShowLoader(false);
     },
     [loaderContext, usersQuery.isFetching],
   );
