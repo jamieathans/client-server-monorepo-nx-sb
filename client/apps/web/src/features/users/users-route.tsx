@@ -3,6 +3,8 @@ import {
   useLoaderContext,
   UsersQueryFactory,
   useTitleContext,
+  VirtualTableFisrtRow,
+  VirtualTableLastRow,
 } from '@org/shared-ui';
 import { useEffect, useState } from 'react';
 import { Titles } from '../../titles';
@@ -79,19 +81,10 @@ function UsersRoute() {
         </Table.Thead>
 
         <Table.Tbody>
-          {virtualItems.length > 0 && (
-            <tr aria-hidden>
-              <td
-                aria-hidden
-                colSpan={NUMBER_OF_COLUMNS}
-                style={{
-                  height: virtualItems[0].start,
-                  padding: 0,
-                  border: 'none',
-                }}
-              />
-            </tr>
-          )}
+          <VirtualTableFisrtRow
+            virtualItems={virtualItems}
+            colSpan={NUMBER_OF_COLUMNS}
+          />
 
           {virtualItems.map((virtualItem) => {
             const row = usersQuery.data[virtualItem.index];
@@ -110,21 +103,11 @@ function UsersRoute() {
             );
           })}
 
-          {virtualItems.length > 0 && (
-            <tr aria-hidden>
-              <td
-                aria-hidden
-                colSpan={NUMBER_OF_COLUMNS}
-                style={{
-                  height:
-                    virtualizer.getTotalSize() -
-                    virtualItems[virtualItems.length - 1].end,
-                  padding: 0,
-                  border: 'none',
-                }}
-              />
-            </tr>
-          )}
+          <VirtualTableLastRow
+            virtualizer={virtualizer}
+            virtualItems={virtualItems}
+            colSpan={NUMBER_OF_COLUMNS}
+          />
         </Table.Tbody>
       </Table>
     </Table.ScrollContainer>

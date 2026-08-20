@@ -19,3 +19,5 @@ export * from './lib/hooks/use-user-has-role';
 export * from './lib/mutations/update-user-mutation';
 export * from './lib/context/loader-context';
 export * from './lib/query-factories/me-query-factory';
+export * from './lib/components/table/virtual-table-first-row';
+export * from './lib/components/table/virtual-table-last-row';
