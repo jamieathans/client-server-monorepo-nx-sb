@@ -3,8 +3,7 @@ import {
   useLoaderContext,
   UsersQueryFactory,
   useTitleContext,
-  VirtualTableFisrtRow,
-  VirtualTableLastRow,
+  VirtualTableBody,
 } from '@org/shared-ui';
 import { useEffect, useState } from 'react';
 import { Titles } from '../../titles';
@@ -56,7 +55,6 @@ function UsersRoute() {
   const virtualItems = virtualizer.getVirtualItems();
 
   function handleTableRowClick(id: string) {
-    //console.log('id', id);
     navigate(`/${RoutePaths.Users}/${id}`);
   }
 
@@ -80,18 +78,17 @@ function UsersRoute() {
           </Table.Tr>
         </Table.Thead>
 
-        <Table.Tbody>
-          <VirtualTableFisrtRow
-            virtualItems={virtualItems}
-            colSpan={NUMBER_OF_COLUMNS}
-          />
-
+        <VirtualTableBody
+          virtualizer={virtualizer}
+          virtualItems={virtualItems}
+          colSpan={NUMBER_OF_COLUMNS}
+        >
           {virtualItems.map((virtualItem) => {
             const row = usersQuery.data[virtualItem.index];
             return (
               <Table.Tr
                 className={classes.tableRow}
-                key={virtualItem.index}
+                key={row.id}
                 onClick={() => handleTableRowClick(row.id)}
               >
                 <Table.Td>{row.username}</Table.Td>
@@ -102,13 +99,7 @@ function UsersRoute() {
               </Table.Tr>
             );
           })}
-
-          <VirtualTableLastRow
-            virtualizer={virtualizer}
-            virtualItems={virtualItems}
-            colSpan={NUMBER_OF_COLUMNS}
-          />
-        </Table.Tbody>
+        </VirtualTableBody>
       </Table>
     </Table.ScrollContainer>
   );
