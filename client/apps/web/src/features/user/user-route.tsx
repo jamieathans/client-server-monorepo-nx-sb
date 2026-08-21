@@ -11,12 +11,14 @@ import {
 import { isEmail, isNotEmpty, useForm } from '@mantine/form';
 import { Role, UserDto } from '@org/shared-types';
 import {
+  InfoAlert,
   MeQueryFactory,
   showSuccessNotification,
   UsersQueryFactory,
   useTitleContext,
   useUpdateUserMutation,
   useUserHasRole,
+  WarningAlert,
 } from '@org/shared-ui';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useEffectEvent } from 'react';
@@ -39,6 +41,8 @@ function UserRoute() {
   );
 
   const meQuery = useQuery(MeQueryFactory.meQueryOptions());
+
+  const isEditingTheLoggedInUser = userId === meQuery.data?.id;
 
   const rolesQuery = useQuery(UsersQueryFactory.rolesQueryOptions());
 
@@ -150,10 +154,18 @@ function UserRoute() {
             message: 'User details updated.',
           });
 
-          // Check if editing the logged in user.
-          if (userId === meQuery.data?.id) {
-            if (values.username === meQuery.data?.username) {
-              // Username has not changed, so just invalidate the "me" query.
+          if (isEditingTheLoggedInUser) {
+            const usernameNotChanged =
+              values.username === meQuery.data?.username;
+
+            const currentRoles = new Set(meQuery.data?.roles);
+            const updatedRoles = new Set(values.roles);
+
+            const rolesNotChanged =
+              currentRoles.size === updatedRoles.size &&
+              currentRoles.isSubsetOf(updatedRoles);
+
+            if (usernameNotChanged && rolesNotChanged) {
               queryClient.invalidateQueries({
                 queryKey: MeQueryFactory.meQueryOptions().queryKey,
               });
@@ -174,14 +186,24 @@ function UserRoute() {
   const submitButtonDisabled =
     form.submitting || userQuery.isFetching || rolesQuery.isFetching;
 
+  const changingForcesLogoutLabel = isEditingTheLoggedInUser
+    ? '(changing forces logout)'
+    : '';
+
   return (
     <>
       <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
+          {isEditingTheLoggedInUser && (
+            <WarningAlert>
+              Modifying the indicated logged in user details will force your
+              session to be logged out.
+            </WarningAlert>
+          )}
           <TextInput
             {...form.getInputProps('username')}
             key={form.key('username')}
-            label="Username"
+            label={`Username ${changingForcesLogoutLabel}`}
             placeholder="Username"
             withAsterisk
             disabled={form.submitting}
@@ -232,7 +254,8 @@ function UserRoute() {
           />
           {userIsAdmin && (
             <MultiSelect
-              label="Pick Roles"
+              withAsterisk
+              label={`Pick Roles ${changingForcesLogoutLabel}`}
               placeholder="Pick Roles"
               data={rolesQuery.data}
               key={form.key('roles')}
@@ -249,10 +272,15 @@ function UserRoute() {
       <Modal
         opened={disclosureOpened}
         onClose={handleModalClose}
-        title="Logout required"
         centered
+        title="Logout required"
       >
-        As the username has changed, you will be logged out.
+        <Stack>
+          <InfoAlert title={null}>You will now be logged out.</InfoAlert>
+          <Button onClick={handleModalClose} style={{ alignSelf: 'center' }}>
+            OK
+          </Button>
+        </Stack>
       </Modal>
     </>
   );

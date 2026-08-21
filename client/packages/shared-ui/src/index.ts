@@ -22,3 +22,4 @@ export * from './lib/query-factories/me-query-factory';
 export * from './lib/components/table/virtual-table-first-row';
 export * from './lib/components/table/virtual-table-last-row';
 export * from './lib/components/table/virtual-table-body';
+export * from './lib/components/alert/alerts';
