@@ -1,0 +1,3 @@
+# Force Nx to track a specific .git ignored file.
+!packages/shared-types/src/lib/dto.ts
+
