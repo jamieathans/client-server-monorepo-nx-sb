@@ -3,6 +3,7 @@ import {
   useLoaderContext,
   UsersQueryFactory,
   useTitleContext,
+  VirtualTableBody,
 } from '@org/shared-ui';
 import { useEffect, useState } from 'react';
 import { Titles } from '../../titles';
@@ -54,7 +55,6 @@ function UsersRoute() {
   const virtualItems = virtualizer.getVirtualItems();
 
   function handleTableRowClick(id: string) {
-    //console.log('id', id);
     navigate(`/${RoutePaths.Users}/${id}`);
   }
 
@@ -78,27 +78,17 @@ function UsersRoute() {
           </Table.Tr>
         </Table.Thead>
 
-        <Table.Tbody>
-          {virtualItems.length > 0 && (
-            <tr aria-hidden>
-              <td
-                aria-hidden
-                colSpan={NUMBER_OF_COLUMNS}
-                style={{
-                  height: virtualItems[0].start,
-                  padding: 0,
-                  border: 'none',
-                }}
-              />
-            </tr>
-          )}
-
+        <VirtualTableBody
+          virtualizer={virtualizer}
+          virtualItems={virtualItems}
+          colSpan={NUMBER_OF_COLUMNS}
+        >
           {virtualItems.map((virtualItem) => {
             const row = usersQuery.data[virtualItem.index];
             return (
               <Table.Tr
                 className={classes.tableRow}
-                key={virtualItem.index}
+                key={row.id}
                 onClick={() => handleTableRowClick(row.id)}
               >
                 <Table.Td>{row.username}</Table.Td>
@@ -109,23 +99,7 @@ function UsersRoute() {
               </Table.Tr>
             );
           })}
-
-          {virtualItems.length > 0 && (
-            <tr aria-hidden>
-              <td
-                aria-hidden
-                colSpan={NUMBER_OF_COLUMNS}
-                style={{
-                  height:
-                    virtualizer.getTotalSize() -
-                    virtualItems[virtualItems.length - 1].end,
-                  padding: 0,
-                  border: 'none',
-                }}
-              />
-            </tr>
-          )}
-        </Table.Tbody>
+        </VirtualTableBody>
       </Table>
     </Table.ScrollContainer>
   );
