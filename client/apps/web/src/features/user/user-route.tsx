@@ -2,7 +2,6 @@ import {
   Button,
   Group,
   Loader,
-  Modal,
   MultiSelect,
   PasswordInput,
   Stack,
@@ -11,28 +10,23 @@ import {
 import { isEmail, isNotEmpty, useForm } from '@mantine/form';
 import { Role, UserDto } from '@org/shared-types';
 import {
-  InfoAlert,
   MeQueryFactory,
   showSuccessNotification,
   UsersQueryFactory,
   useTitleContext,
   useUpdateUserMutation,
   useUserHasRole,
-  WarningAlert,
 } from '@org/shared-ui';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useEffectEvent } from 'react';
 import { useParams } from 'react-router';
 import classes from './user-route.module.css';
 import { UsersApi } from '@org/shared-utils';
-import { useDisclosure } from '@mantine/hooks';
-import { useLogout } from '../../components/logout/use-logout';
 
 function UserRoute() {
   const queryClient = useQueryClient();
   const titleContext = useTitleContext();
   const params = useParams();
-  const [disclosureOpened, disclosure] = useDisclosure(false);
 
   const userId = params.userId ?? '';
 
@@ -49,8 +43,6 @@ function UserRoute() {
   const { userIsAdmin } = useUserHasRole();
 
   const updateUserMutation = useUpdateUserMutation();
-
-  const { logout } = useLogout();
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -155,134 +147,90 @@ function UserRoute() {
           });
 
           if (isEditingTheLoggedInUser) {
-            const usernameNotChanged =
-              values.username === meQuery.data?.username;
-
-            const currentRoles = new Set(meQuery.data?.roles);
-            const updatedRoles = new Set(values.roles);
-
-            const rolesNotChanged =
-              currentRoles.size === updatedRoles.size &&
-              currentRoles.isSubsetOf(updatedRoles);
-
-            if (usernameNotChanged && rolesNotChanged) {
-              queryClient.invalidateQueries({
-                queryKey: MeQueryFactory.meQueryOptions().queryKey,
-              });
-            } else {
-              disclosure.open();
-            }
+            queryClient.invalidateQueries({
+              queryKey: MeQueryFactory.meQueryOptions().queryKey,
+            });
           }
         },
       },
     );
   }
 
-  function handleModalClose() {
-    disclosure.close();
-    logout();
-  }
-
   const submitButtonDisabled =
     form.submitting || userQuery.isFetching || rolesQuery.isFetching;
 
-  const changingForcesLogoutLabel = isEditingTheLoggedInUser
-    ? '(changing forces logout)'
-    : '';
-
   return (
-    <>
-      <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack>
-          {isEditingTheLoggedInUser && (
-            <WarningAlert>
-              Modifying the indicated logged in user details will force your
-              session to be logged out.
-            </WarningAlert>
-          )}
-          <TextInput
-            {...form.getInputProps('username')}
-            key={form.key('username')}
-            label={`Username ${changingForcesLogoutLabel}`}
-            placeholder="Username"
+    <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
+      <Stack>
+        <TextInput
+          {...form.getInputProps('username')}
+          key={form.key('username')}
+          label="Username"
+          placeholder="Username"
+          withAsterisk
+          disabled={form.submitting}
+          rightSection={
+            form.isValidating('username') ? <Loader size="sm" /> : null
+          }
+          classNames={{
+            input: classes.usernameInput,
+          }}
+        />
+        <TextInput
+          {...form.getInputProps('firstName')}
+          key={form.key('firstName')}
+          label="First Name"
+          placeholder="First Name"
+          withAsterisk
+        />
+        <TextInput
+          {...form.getInputProps('surname')}
+          key={form.key('surname')}
+          label="Surname"
+          placeholder="Surname"
+          withAsterisk
+        />
+        <TextInput
+          {...form.getInputProps('email')}
+          key={form.key('email')}
+          label="Email"
+          placeholder="Email"
+          withAsterisk
+          classNames={{
+            input: classes.emailInput,
+          }}
+        />
+        <PasswordInput
+          {...form.getInputProps('password')}
+          key={form.key('password')}
+          label="Password"
+          placeholder="Password"
+          withAsterisk
+        />
+        <PasswordInput
+          {...form.getInputProps('confirmPassword')}
+          key={form.key('confirmPassword')}
+          label="Confirm Password"
+          placeholder="Confirm Password"
+          withAsterisk
+        />
+        {userIsAdmin && (
+          <MultiSelect
             withAsterisk
-            disabled={form.submitting}
-            rightSection={
-              form.isValidating('username') ? <Loader size="sm" /> : null
-            }
-            classNames={{
-              input: classes.usernameInput,
-            }}
+            label="Pick Roles"
+            placeholder="Pick Roles"
+            data={rolesQuery.data}
+            key={form.key('roles')}
+            {...form.getInputProps('roles')}
           />
-          <TextInput
-            {...form.getInputProps('firstName')}
-            key={form.key('firstName')}
-            label="First Name"
-            placeholder="First Name"
-            withAsterisk
-          />
-          <TextInput
-            {...form.getInputProps('surname')}
-            key={form.key('surname')}
-            label="Surname"
-            placeholder="Surname"
-            withAsterisk
-          />
-          <TextInput
-            {...form.getInputProps('email')}
-            key={form.key('email')}
-            label="Email"
-            placeholder="Email"
-            withAsterisk
-            classNames={{
-              input: classes.emailInput,
-            }}
-          />
-          <PasswordInput
-            {...form.getInputProps('password')}
-            key={form.key('password')}
-            label="Password"
-            placeholder="Password"
-            withAsterisk
-          />
-          <PasswordInput
-            {...form.getInputProps('confirmPassword')}
-            key={form.key('confirmPassword')}
-            label="Confirm Password"
-            placeholder="Confirm Password"
-            withAsterisk
-          />
-          {userIsAdmin && (
-            <MultiSelect
-              withAsterisk
-              label={`Pick Roles ${changingForcesLogoutLabel}`}
-              placeholder="Pick Roles"
-              data={rolesQuery.data}
-              key={form.key('roles')}
-              {...form.getInputProps('roles')}
-            />
-          )}
-          <Group justify="center">
-            <Button type="submit" disabled={submitButtonDisabled}>
-              Submit
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-      <Modal
-        opened={disclosureOpened}
-        onClose={handleModalClose}
-        centered
-        title="Logout required"
-      >
-        <Stack>
-          <InfoAlert title={null}>You will now be logged out.</InfoAlert>
-          <Button onClick={handleModalClose} style={{ alignSelf: 'center' }}>
-            OK
+        )}
+        <Group justify="center">
+          <Button type="submit" disabled={submitButtonDisabled}>
+            Submit
           </Button>
-        </Stack>
-      </Modal>
-    </>
+        </Group>
+      </Stack>
+    </form>
   );
 }
 

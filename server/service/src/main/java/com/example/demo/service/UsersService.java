@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -108,8 +111,24 @@ public class UsersService extends BaseService {
         for (var role : userDto.roles()) {
 
             var roleEntity = roleRepository.findByName(role);
-            
+
             userEntity.getRoles().add(roleEntity);
         }
+
+        updateAuthentication(userEntity, userDto.password() != null ? userDto.password() : null);
+    }
+
+    private static void updateAuthentication(UserEntity userEntity, @Nullable String rawPassword) {
+
+        var currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
+
+        var newPrincipal = new EntityUserDetails(userEntity);
+
+        var newAuthentication = UsernamePasswordAuthenticationToken.authenticated(
+                newPrincipal,
+                rawPassword != null ? rawPassword : currentAuthentication.getCredentials(),
+                newPrincipal.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(newAuthentication);
     }
 }
