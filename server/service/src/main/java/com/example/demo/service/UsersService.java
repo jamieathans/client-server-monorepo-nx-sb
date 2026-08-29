@@ -1,9 +1,14 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.FactorGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -108,8 +113,35 @@ public class UsersService extends BaseService {
         for (var role : userDto.roles()) {
 
             var roleEntity = roleRepository.findByName(role);
-            
+
             userEntity.getRoles().add(roleEntity);
         }
+
+        updateAuthentication(userEntity);
+    }
+
+    private static void updateAuthentication(UserEntity userEntity) {
+
+        var currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
+
+        var factorGrantedAuthorityOptional = currentAuthentication.getAuthorities().stream()
+                .filter(ga -> ga instanceof FactorGrantedAuthority).findFirst();
+
+        var newPrincipal = new EntityUserDetails(userEntity);
+        
+        var newAuthorities = new ArrayList<GrantedAuthority>(newPrincipal.getAuthorities());
+        
+        if (factorGrantedAuthorityOptional.isPresent()) {
+            newAuthorities.add(factorGrantedAuthorityOptional.get());
+        }
+
+        var newAuthentication = UsernamePasswordAuthenticationToken.authenticated(
+                newPrincipal,
+                currentAuthentication.getCredentials(),
+                newAuthorities);
+
+        newAuthentication.setDetails(currentAuthentication.getDetails());
+
+        SecurityContextHolder.getContext().setAuthentication(newAuthentication);
     }
 }
