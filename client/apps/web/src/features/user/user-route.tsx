@@ -11,6 +11,7 @@ import { isEmail, isNotEmpty, useForm } from '@mantine/form';
 import { Role, UserDto } from '@org/shared-types';
 import {
   MeQueryFactory,
+  RolesQueryFactory,
   showSuccessNotification,
   UsersQueryFactory,
   useTitleContext,
@@ -38,7 +39,7 @@ function UserRoute() {
 
   const isEditingTheLoggedInUser = userId === meQuery.data?.id;
 
-  const rolesQuery = useQuery(UsersQueryFactory.rolesQueryOptions());
+  const rolesQuery = useQuery(RolesQueryFactory.rolesQueryOptions());
 
   const { userIsAdmin } = useUserHasRole();
 
