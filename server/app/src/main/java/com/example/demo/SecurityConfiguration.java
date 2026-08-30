@@ -52,15 +52,13 @@ public class SecurityConfiguration {
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
-                                                .loginProcessingUrl(BaseRestController.API_PREFIX_PATH
-                                                                + "/authentication/login")
+                                                .loginProcessingUrl("/authentication/login")
                                                 .successHandler((req, res, auth) -> res
                                                                 .setStatus(HttpStatus.OK.value()))
                                                 .failureHandler((req, res, auth) -> res
                                                                 .setStatus(HttpStatus.UNAUTHORIZED.value())))
                                 .logout(logout -> logout
-                                                .logoutUrl(BaseRestController.API_PREFIX_PATH
-                                                                + "/authentication/logout")
+                                                .logoutUrl("/authentication/logout")
                                                 // Prevent redirection; return 200 OK instead
                                                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(
                                                                 HttpStatus.OK)))
@@ -72,16 +70,18 @@ public class SecurityConfiguration {
         }
 
         /*
-        @Bean
-        public UserDetailsService userDetailsService() {
-                @SuppressWarnings("deprecation")
-                var userBuilder = User.withDefaultPasswordEncoder();
-
-                var jamie = userBuilder.username("jamie").password("password").roles("USER").build();
-
-                return new InMemoryUserDetailsManager(jamie);
-        }
-        */
+         * @Bean
+         * public UserDetailsService userDetailsService() {
+         * 
+         * @SuppressWarnings("deprecation")
+         * var userBuilder = User.withDefaultPasswordEncoder();
+         * 
+         * var jamie =
+         * userBuilder.username("jamie").password("password").roles("USER").build();
+         * 
+         * return new InMemoryUserDetailsManager(jamie);
+         * }
+         */
 
         @Bean
         public PasswordEncoder passwordEncoder() {

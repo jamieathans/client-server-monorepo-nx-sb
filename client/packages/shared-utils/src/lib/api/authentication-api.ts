@@ -2,7 +2,7 @@ import { BaseApi, FetchRequestInit } from './base-api';
 
 export class AuthenticationApi extends BaseApi {
   constructor() {
-    super({ apiPrefix: '/authentication' });
+    super({ apiPrefix: '/authentication', prependSlashApi: false });
   }
 
   login({
