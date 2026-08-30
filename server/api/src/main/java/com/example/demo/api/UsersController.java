@@ -61,14 +61,14 @@ public class UsersController extends BaseRestController {
     }
 
     @PostMapping(API_PREFIX_PATH + "/update-user")
-    public void updateUser(@RequestBody UserDto userDto) {
+    public void updateUser(@RequestBody UserDto userDto, @AuthenticationPrincipal UserDetails userDetails) {
 
-        usersService.updateUser(userDto);
+        usersService.updateUser(userDto, userDetails);
     }
 
     @GetMapping(API_PREFIX_PATH + "/roles")
     public Role[] roles() {
-        
+
         return Role.values();
     }
 }

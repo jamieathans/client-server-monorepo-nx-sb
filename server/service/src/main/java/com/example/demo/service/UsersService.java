@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.FactorGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -95,9 +96,11 @@ public class UsersService extends BaseService {
         return usernameEntityOptional.isEmpty();
     }
 
-    public void updateUser(UserDto userDto) {
+    public void updateUser(UserDto userDto, UserDetails loggedInUserDetails) {
 
         var userEntity = userRepository.findById(UUID.fromString(userDto.id())).get();
+
+        var isEditingTheLoggedInUser = userEntity.getUsername().equalsIgnoreCase(loggedInUserDetails.getUsername());
 
         userEntity.setUsername(userDto.username());
         userEntity.setFirstName(userDto.firstName());
@@ -117,7 +120,9 @@ public class UsersService extends BaseService {
             userEntity.getRoles().add(roleEntity);
         }
 
-        updateAuthentication(userEntity);
+        if (isEditingTheLoggedInUser) {
+            updateAuthentication(userEntity);
+        }
     }
 
     private static void updateAuthentication(UserEntity userEntity) {
@@ -128,9 +133,9 @@ public class UsersService extends BaseService {
                 .filter(ga -> ga instanceof FactorGrantedAuthority).findFirst();
 
         var newPrincipal = new EntityUserDetails(userEntity);
-        
+
         var newAuthorities = new ArrayList<GrantedAuthority>(newPrincipal.getAuthorities());
-        
+
         if (factorGrantedAuthorityOptional.isPresent()) {
             newAuthorities.add(factorGrantedAuthorityOptional.get());
         }
